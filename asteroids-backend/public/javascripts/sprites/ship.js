@@ -1,5 +1,3 @@
-var Sprite = require('./Sprite');
-
 Ship = function () {
   this.init("ship",
             [-5,   4,
@@ -16,7 +14,7 @@ Ship = function () {
 
   this.postMove = this.wrapPostMove;
 
-  this.collidesWith = ["asteroid", "bigalien", "alienbullet","bullet"];
+  this.collidesWith = [];
 
   this.preMove = function (delta) {
     if (KEY_STATUS.left) {
@@ -26,12 +24,14 @@ Ship = function () {
     } else {
       this.vel.rot = 0;
     }
+    socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
 
     if (KEY_STATUS.up) {
       var rad = ((this.rot-90) * Math.PI)/180;
       this.acc.x = 0.5 * Math.cos(rad);
       this.acc.y = 0.5 * Math.sin(rad);
       this.children.exhaust.visible = Math.random() > 0.1;
+      socket.emit('move',[this.acc.x,this.acc.y]);
     } else {
       this.acc.x = 0;
       this.acc.y = 0;
@@ -43,6 +43,7 @@ Ship = function () {
     }
     if (KEY_STATUS.space) {
       if (this.bulletCounter <= 0) {
+        socket.emit('bullet fire');
         this.bulletCounter = 10;
         for (var i = 0; i < this.bullets.length; i++) {
           if (!this.bullets[i].visible) {
@@ -52,8 +53,8 @@ Ship = function () {
             var vectorx = Math.cos(rad);
             var vectory = Math.sin(rad);
             // move to the nose of the ship
-            bullet.x = this.x + vectorx * 10+this.vel.x/delta;
-            bullet.y = this.y + vectory * 10+this.vel.y/delta;
+            bullet.x = this.x + vectorx * 4;
+            bullet.y = this.y + vectory * 4;
             bullet.vel.x = 6 * vectorx + this.vel.x;
             bullet.vel.y = 6 * vectory + this.vel.y;
             bullet.visible = true;
@@ -70,18 +71,5 @@ Ship = function () {
     }
   };
 
-  this.collision = function (other) {
-    SFX.explosion();
-    Game.explosionAt(other.x, other.y);
-    Game.FSM.state = 'player_died';
-    this.visible = false;
-    this.currentNode.leave(this);
-    this.currentNode = null;
-    communicateHit();
-    Game.lives--;
-  };
-
 };
 Ship.prototype = new Sprite();
-
-module.exports = Ship;

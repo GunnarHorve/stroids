@@ -1,3 +1,5 @@
+var Sprite = require('./Sprite');
+
 Asteroid = function () {
   this.init("asteroid",
             [-10,   0,
@@ -40,3 +42,5 @@ Asteroid = function () {
   };
 };
 Asteroid.prototype = new Sprite();
+
+module.exports = Asteroid;
