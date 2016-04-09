@@ -12,6 +12,8 @@ Ship = function () {
 
   this.bulletCounter = 0;
 
+  this.chatting = false;
+
   this.postMove = this.wrapPostMove;
 
   this.collidesWith = ["asteroid", "bigalien", "alienbullet"];
@@ -39,7 +41,7 @@ Ship = function () {
     if (this.bulletCounter > 0) {
       this.bulletCounter -= delta;
     }
-    if (KEY_STATUS.space) {
+    if (KEY_STATUS.space && !this.chatting) {
       if (this.bulletCounter <= 0) {
         this.bulletCounter = 10;
         for (var i = 0; i < this.bullets.length; i++) {

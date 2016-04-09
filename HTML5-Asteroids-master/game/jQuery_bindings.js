@@ -53,6 +53,7 @@ $(function () {
   ship.x = Game.canvasWidth / 2;
   ship.y = Game.canvasHeight / 2;
 
+
   sprites.push(ship);
 
   ship.bullets = [];
@@ -71,16 +72,20 @@ $(function () {
 
   var i, j = 0;
 
-  var paused = false;
-  var showFramerate = false;
-  var avgFramerate = 0;
-  var frameCount = 0;
   var elapsedCounter = 0;
 
   var lastFrame = Date.now();
   var thisFrame;
   var elapsed;
   var delta;
+
+  //message work
+  var chatmode = false;
+  var currentMessage = "";
+  var messages = ["h", "i", "t", "h", "e", "r", "e", "!"];
+  var messageTimer=[600, 500, 490, 300, 220, 210, 100, 10];
+  //message work end
+
 
   var canvasNode = canvas[0];
 
@@ -102,20 +107,6 @@ $(function () {
     context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
 
     Game.FSM.execute();
-
-    if (KEY_STATUS.g) {
-      context.beginPath();
-      for (var i = 0; i < gridWidth; i++) {
-        context.moveTo(i * GRID_SIZE, 0);
-        context.lineTo(i * GRID_SIZE, Game.canvasHeight);
-      }
-      for (var j = 0; j < gridHeight; j++) {
-        context.moveTo(0, j * GRID_SIZE);
-        context.lineTo(Game.canvasWidth, j * GRID_SIZE);
-      }
-      context.closePath();
-      context.stroke();
-    }
 
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
@@ -147,43 +138,94 @@ $(function () {
       context.restore();
     }
 
-    if (showFramerate) {
-      Text.renderText(''+avgFramerate, 24, Game.canvasWidth - 38, Game.canvasHeight - 2);
-    }
-
-    frameCount++;
     elapsedCounter += elapsed;
     if (elapsedCounter > 1000) {
       elapsedCounter -= 1000;
-      avgFramerate = frameCount;
-      frameCount = 0;
     }
 
-    if (paused) {
-      Text.renderText('PAUSED', 72, Game.canvasWidth/2 - 160, 120);
-    } else {
-      requestAnimFrame(mainLoop, canvasNode);
+    if(chatmode){
+      Text.renderText(currentMessage, 10, 10, Game.canvasHeight - 10);
+      for(i = 0; i < messages.length; i++){
+        textY = Game.canvasHeight - 30 - 15*i;
+        Text.renderText(messages[i], 10, 10, textY);
+      }
     }
+
+    for(i = 0; i < messages.length; i++){
+      if(messageTimer[i] > 0){
+        textY = Game.canvasHeight - 30 - 15*i;
+        Text.renderText(messages[i], 10, 10, textY);
+        messageTimer[i]--;
+      }
+    }
+
+      requestAnimFrame(mainLoop, canvasNode);
   };
 
   mainLoop();
 
+  var addChatToScreen = function(string){
+    var tempA = messages[0];
+    var tempA2 = messageTimer[0];
+    var tempB = "";
+    var tempB2 = 0;
+      for(var i = 1; i < messages.length; i++){
+        tempB = messages[i];
+        tempB2 = messageTimer[i];
+        messages[i] = tempA;
+        messageTimer[i] = tempA2;
+        tempA = tempB;
+        tempA2 = tempB2;
+      }
+      messages[0] = string;
+      messageTimer[0] = 1000;
+  }
+
   $(window).keydown(function (e) {
+
+    if(chatmode && KEY_CODES[e.keyCode] != 'enter'){
+      //talk
+      var input = String.fromCharCode(e.keyCode).toLowerCase();
+      if(/[a-zA-Z0-9-_ ]/.test(input)){
+        currentMessage = currentMessage + input;
+      }else if(e.keyCode == 8){//backspace
+        currentMessage = currentMessage.substring(0, currentMessage.length - 1);
+      }else{
+        return;
+      }
+      return;
+    }
     switch (KEY_CODES[e.keyCode]) {
-      case 'f': // show framerate
-        showFramerate = !showFramerate;
-        break;
-      case 'p': // pause
-        paused = !paused;
-        if (!paused) {
-          // start up again
-          lastFrame = Date.now();
-          mainLoop();
-        }
-        break;
       case 'm': // mute
         SFX.muted = !SFX.muted;
         break;
+      case 't':
+        if(!chatmode){
+          chatmode = true;
+          ship.chatting = true;
+          Game.isChatting = true;
+          break;
+        }
+        break;
+      case '/':
+        if(!chatmode){
+          chatmode = true;
+          ship.chatting = true;
+          Game.isChatting = true;
+          break;
+        }
+      break;
+      case 'enter':
+      if(!chatmode){
+        break;
+      }
+      chatmode = false;
+      ship.chatting = false;
+      Game.isChatting = false;
+      console.log(currentMessage);
+      addChatToScreen(currentMessage);
+      currentMessage = "";
+      break;
     }
   });
 });

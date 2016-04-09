@@ -8,7 +8,11 @@ KEY_CODES = {
   71: 'g',
   72: 'h',
   77: 'm',
-  80: 'p'
+  80: 'p',
+  13: 'enter',
+  84: 't',
+  191: '/',
+
 }
 
 KEY_STATUS = { keyDown:false };
