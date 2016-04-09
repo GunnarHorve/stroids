@@ -16,7 +16,7 @@ Ship = function () {
 
   this.postMove = this.wrapPostMove;
 
-  this.collidesWith = ["asteroid", "bigalien", "alienbullet"];
+  this.collidesWith = [];
 
   this.preMove = function (delta) {
     if (KEY_STATUS.left) {

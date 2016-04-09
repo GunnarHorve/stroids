@@ -15,7 +15,7 @@ Asteroid = function () {
   this.scale = 6;
   this.postMove = this.wrapPostMove;
 
-  this.collidesWith = ["ship", "bullet"];
+  this.collidesWith = [];
 
   this.collision = function (other) {
     SFX.explosion();
