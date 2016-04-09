@@ -3,10 +3,13 @@ $(function () {
   Game.canvasWidth  = canvas.width();
   Game.canvasHeight = canvas.height();
 
+
   var context = canvas[0].getContext("2d");
 
   Text.context = context;
   Text.face = vector_battle;
+
+  context.font = "15px Arial";
 
   var gridWidth = Math.round(Game.canvasWidth / GRID_SIZE);
   var gridHeight = Math.round(Game.canvasHeight / GRID_SIZE);
@@ -144,17 +147,17 @@ $(function () {
     }
 
     if(chatmode){
-      Text.renderText(currentMessage, 10, 10, Game.canvasHeight - 10);
+      context.fillText(currentMessage, 10, Game.canvasHeight - 10);
       for(i = 0; i < messages.length; i++){
         textY = Game.canvasHeight - 30 - 15*i;
-        Text.renderText(messages[i], 10, 10, textY);
+        context.fillText(messages[i], 10, textY);
       }
     }
 
     for(i = 0; i < messages.length; i++){
       if(messageTimer[i] > 0){
         textY = Game.canvasHeight - 30 - 15*i;
-        Text.renderText(messages[i], 10, 10, textY);
+        context.fillText(messages[i], 10, textY);
         messageTimer[i]--;
       }
     }

@@ -45,7 +45,7 @@ Game = {
     },
     waiting: function () {
       Text.renderText('Press Space to Start', 36, Game.canvasWidth/2 - 270, Game.canvasHeight/2);
-      if (KEY_STATUS.space || window.gameStart) {
+      if ((KEY_STATUS.space || window.gameStart)) {
         KEY_STATUS.space = false; // hack so we don't shoot right away
         window.gameStart = false;
         this.state = 'start';
