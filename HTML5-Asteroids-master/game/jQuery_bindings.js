@@ -225,7 +225,10 @@ $(function () {
       chatmode = false;
       ship.chatting = false;
       Game.isChatting = false;
-      console.log(currentMessage);
+      if(currentMessage == "" || currentMessage == " " || currentMessage == "  "){
+        currentMessage = "";
+        break;
+      }
       addChatToScreen(currentMessage);
       currentMessage = "";
       break;
