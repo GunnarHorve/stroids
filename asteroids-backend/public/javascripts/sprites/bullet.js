@@ -1,5 +1,3 @@
-var Sprite = require('./Sprite');
-
 Bullet = function () {
   this.init("bullet", [0, 0]);
   this.time = 0;
@@ -33,16 +31,10 @@ Bullet = function () {
       this.time = 0;
     }
   };
-  this.collision = function (other) {
-    this.time = 0;
-    this.visible = false;
-    this.currentNode.leave(this);
-    this.currentNode = null;
-  };
+
   this.transformedPoints = function (other) {
     return [this.x, this.y];
   };
 
 };
 Bullet.prototype = new Sprite();
-module.exports = Bullet;

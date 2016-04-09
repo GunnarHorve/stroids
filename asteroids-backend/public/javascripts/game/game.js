@@ -1,5 +1,3 @@
-var Asteroid = require('./Asteroid');
-
 Game = {
   score: 0,
   totalAsteroids: 5,
@@ -11,26 +9,6 @@ Game = {
   sprites: [],
   ship: null,
 
-  spawnAsteroids: function (count) {
-    if (!count) count = this.totalAsteroids;
-    for (var i = 0; i < count; i++) {
-      var roid = new Asteroid();
-      roid.x = Math.random() * this.canvasWidth;
-      roid.y = Math.random() * this.canvasHeight;
-      while (!roid.isClear()) {
-        roid.x = Math.random() * this.canvasWidth;
-        roid.y = Math.random() * this.canvasHeight;
-      }
-      roid.vel.x = Math.random() * 4 - 2;
-      roid.vel.y = Math.random() * 4 - 2;
-      if (Math.random() > 0.5) {
-        roid.points.reverse();
-      }
-      roid.vel.rot = Math.random() * 2 - 1;
-      Game.sprites.push(roid);
-    }
-  },
-
   explosionAt: function (x, y) {
     var splosion = new Explosion();
     splosion.x = x;
@@ -41,7 +19,6 @@ Game = {
 
   FSM: {
     boot: function () {
-      Game.spawnAsteroids(5);
       this.state = 'waiting';
     },
     waiting: function () {
@@ -53,19 +30,7 @@ Game = {
       }
     },
     start: function () {
-      for (var i = 0; i < Game.sprites.length; i++) {
-        if (Game.sprites[i].name == 'asteroid') {
-          Game.sprites[i].die();
-        } else if (Game.sprites[i].name == 'bullet') {
-          Game.sprites[i].visible = false;
-        }
-      }
-
-      Game.score = 0;
-      Game.lives = 2;
-      Game.totalAsteroids = 2;
-      Game.spawnAsteroids();
-
+      socket.emit('start');
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
@@ -98,7 +63,6 @@ Game = {
         this.timer = null;
         Game.totalAsteroids++;
         if (Game.totalAsteroids > 12) Game.totalAsteroids = 12;
-        Game.spawnAsteroids();
         this.state = 'run';
       }
     },
@@ -134,12 +98,7 @@ Game = {
       this[this.state]();
     },
     state: 'boot'
-  },
-
-  updateData: function(fn){
-    fn(this.sprites);
   }
 
-};
 
-module.exports = Game;
+};

@@ -1,6 +1,5 @@
-var Sprite = function () {
+Sprite = function () {
   this.init = function (name, points) {
-    GRID_SIZE = 60;
     this.name     = name;
     this.points   = points;
 
@@ -44,6 +43,7 @@ var Sprite = function () {
 
     this.context.save();
     this.configureTransform();
+    this.draw();
 
     var canidates = this.findCollisionCanidates();
 
@@ -56,6 +56,7 @@ var Sprite = function () {
       this.x += this.currentNode.dupe.horizontal;
       this.context.save();
       this.configureTransform();
+      this.draw();
       this.checkCollisionsAgainst(canidates);
       this.context.restore();
       if (this.currentNode) {
@@ -66,6 +67,7 @@ var Sprite = function () {
       this.y += this.currentNode.dupe.vertical;
       this.context.save();
       this.configureTransform();
+      this.draw();
       this.checkCollisionsAgainst(canidates);
       this.context.restore();
       if (this.currentNode) {
@@ -80,6 +82,7 @@ var Sprite = function () {
       this.y += this.currentNode.dupe.vertical;
       this.context.save();
       this.configureTransform();
+      this.draw();
       this.checkCollisionsAgainst(canidates);
       this.context.restore();
       if (this.currentNode) {
@@ -144,6 +147,27 @@ var Sprite = function () {
     this.context.translate(this.x, this.y);
     this.context.rotate(rad);
     this.context.scale(this.scale, this.scale);
+  };
+  this.draw = function () {
+    if (!this.visible) return;
+
+    this.context.lineWidth = 1.0 / this.scale;
+
+    for (child in this.children) {
+      this.children[child].draw();
+    }
+
+    this.context.beginPath();
+
+    this.context.moveTo(this.points[0], this.points[1]);
+    for (var i = 1; i < this.points.length/2; i++) {
+      var xi = i*2;
+      var yi = xi + 1;
+      this.context.lineTo(this.points[xi], this.points[yi]);
+    }
+
+    this.context.closePath();
+    this.context.stroke();
   };
   this.findCollisionCanidates = function () {
     if (!this.visible || !this.currentNode) return [];
@@ -239,7 +263,6 @@ var Sprite = function () {
       gridx = (gridx >= this.grid.length) ? 0 : gridx;
       gridy = (gridy >= this.grid[0].length) ? 0 : gridy;
       cn = this.grid[gridx][gridy];
-      return true;
     }
     return (cn.isEmpty(this.collidesWith) &&
             cn.north.isEmpty(this.collidesWith) &&
@@ -264,5 +287,3 @@ var Sprite = function () {
     }
   };
 };
-
-module.exports = Sprite;
