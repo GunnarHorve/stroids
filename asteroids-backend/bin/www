@@ -102,6 +102,16 @@ io.on('connection',function(socket){
     velx = 6 * vectorx + ship.vel.x;
     vely = 6 * vectory + ship.vel.y;
     socket.emit('data',[x,y,ship.rot],[velx,vely,0],[0,0,0],0,'bullet')
+    toAdd = new Bullet();
+    toAdd.x =  x;
+    toAdd.y = y;
+    toAdd.rot = ship.rot;
+    toAdd.vel.x = velx;
+    toAdd.vel.y = vely;
+    toAdd.visible = true;
+    toAdd.id = ship.id;
+
+    Game.sprites.push(toAdd);
 
     console.log('Somebody is firing the lasers!');
   })
@@ -133,6 +143,17 @@ io.on('connection',function(socket){
     rotVel = ship.vel.rot;
     socket.emit('data',[x,y,rot],[velX,velY,rotVel],[0,0,0],ship.id,'ship');
     console.log('spawning ship '+ship.id);
+    if(updater == null){
+      var updater = setInterval(function(){
+        for(i=0;i<Game.sprites.length;i++){
+          if(Game.sprites[i].name != 'ship'){continue;}
+          socket.emit('update',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
+          [Game.sprites[i].vel.x,Game.sprites[i].vel.y,Game.sprites[i].vel.rot],
+          [Game.sprites[i].acc.x, Game.sprites[i].acc.y, Game.sprites[i].acc.rot],
+          Game.sprites[i].id,'ship');
+        }
+      },100);
+    }
   })
 
   socket.on('move',function(acc){
@@ -146,15 +167,8 @@ io.on('connection',function(socket){
     // console.log(ship.x+' '+ship.y);
   })
 
-  // var updates =setInterval(function(){
-  //   Game.updateData(function (data){
-  //     socket.emit('update',data);
-  //   });
-  // },100);
 
-  // socket.on('disconnect',function(){
-  //   clearInterval(updates);
-  // })
+
 
 });
 
@@ -172,9 +186,12 @@ var loop = setInterval(function(){
 
   for (i = 0; i < Game.sprites.length; i++) {
 
-    // if(Game.sprites[i].name == 'ship'){
-    //   console.log(Game.sprites[i].x+'  '+Game.sprites[i].y);
-    // }
+    if(Game.sprites[i].name == 'bullet'){
+      // console.log(Game.sprites[i].x+'  '+Game.sprites[i].y);
+      if(!Game.sprites[i].visible){
+        Game.sprites[i].die();
+      }
+    }
     Game.sprites[i].run(delta);
 
     if (Game.sprites[i].reap) {

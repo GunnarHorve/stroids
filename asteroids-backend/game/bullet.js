@@ -1,9 +1,7 @@
 var Sprite = require('./Sprite');
 
 Bullet = function () {
-  this.bullet_length = 1
-  this.init("bullet", [0, 0,
-                       1, 0]);
+  this.init("bullet", [0, 0]);
   this.time = 0;
   this.bridgesH = false;
   this.bridgesV = false;
@@ -27,11 +25,11 @@ Bullet = function () {
   //   }
   // };
   this.preMove = function (delta) {
+    console.log('moving '+this.visible+'  '+delta+'  '+this.time);
     if (this.visible) {
       this.time += delta;
     }
     if (this.time > 50) {
-      this.visible = false;
       this.die();
     }
   };

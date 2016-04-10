@@ -109,8 +109,8 @@ var Sprite = function () {
     this.x += this.vel.x * delta;
     this.y += this.vel.y * delta;
     this.rot += this.vel.rot * delta;
-    // if(this.name == 'ship'){
-    //   console.log(this.x+'  '+this.y);
+    // if(this.name == 'bullet'){
+    //   console.log(this.vel.x+'  '+this.vel.y);
     // }
     if (this.rot > 360) {
       this.rot -= 360;
@@ -178,7 +178,10 @@ var Sprite = function () {
     if (!other.visible ||
          this == other ||
          this.collidesWith.indexOf(other.name) == -1) {return;};
-    console.log('checking single collision');
+    // console.log('checking single collision');
+    if(other.name == 'bullet'){
+      console.log('bullet is close');
+    }
     var trans = other.transformedPoints();
     var px, py;
     var count = trans.length/2;
@@ -186,6 +189,10 @@ var Sprite = function () {
       px = trans[i*2];
       py = trans[i*2 + 1];
       // mozilla doesn't take into account transforms with isPointInPath >:-P
+      if(other.name == 'bullet' && other.id == this.id){
+        return;
+      }
+
       if (this.pointInPolygon(px,py)) {
         other.collision(this);
         this.collision(other);
@@ -222,6 +229,8 @@ var Sprite = function () {
       this.currentNode.leave(this);
       this.currentNode = null;
     }
+
+    if(this.name == 'bullet'){return;}
     var io = require('../bin/www');
     io.emit('despawn',this.id);
     console.log(this.name+'  '+this.id);
