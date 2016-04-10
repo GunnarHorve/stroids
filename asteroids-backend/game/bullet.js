@@ -25,7 +25,7 @@ Bullet = function () {
   //   }
   // };
   this.preMove = function (delta) {
-    console.log('moving '+this.visible+'  '+delta+'  '+this.time);
+    // console.log('moving '+this.visible+'  '+delta+'  '+this.time);
     if (this.visible) {
       this.time += delta;
     }

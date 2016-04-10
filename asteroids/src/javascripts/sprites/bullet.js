@@ -21,7 +21,7 @@ Bullet = function () {
   };
 
   this.preMove = function (delta) {
-    console.log('bullet moving');
+    // console.log('bullet moving');
     if (this.visible) {
       this.time += delta;
     }
