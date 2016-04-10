@@ -52,7 +52,7 @@ io.on('connection', function(socket){
     //   sessions.set(socket.id, client);
     //
     var name;
-    if (typeof response === 'undefined' || response.name === "" ){
+    if (typeof response === 'undefined' || response.name === null ||response.name === "" ){
 
       name = "Player_F"+ Math.floor(Math.random()*100);
 
