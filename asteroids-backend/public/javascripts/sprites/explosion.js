@@ -31,9 +31,6 @@ Explosion = function () {
     if (this.visible) {
       this.scale += delta;
     }
-    if (this.scale > 8) {
-      this.die();
-    }
   };
 };
 Explosion.prototype = new Sprite();

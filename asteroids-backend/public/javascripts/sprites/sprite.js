@@ -23,8 +23,6 @@ Sprite = function () {
   this.bridgesH = true;
   this.bridgesV = true;
 
-  this.collidesWith = [];
-
   this.x     = 0;
   this.y     = 0;
   this.rot   = 0;
@@ -45,10 +43,7 @@ Sprite = function () {
     this.configureTransform();
     this.draw();
 
-    var canidates = this.findCollisionCanidates();
-
     this.matrix.configure(this.rot, this.scale, this.x, this.y);
-    this.checkCollisionsAgainst(canidates);
 
     this.context.restore();
 
@@ -57,7 +52,6 @@ Sprite = function () {
       this.context.save();
       this.configureTransform();
       this.draw();
-      this.checkCollisionsAgainst(canidates);
       this.context.restore();
       if (this.currentNode) {
         this.x -= this.currentNode.dupe.horizontal;
@@ -68,7 +62,6 @@ Sprite = function () {
       this.context.save();
       this.configureTransform();
       this.draw();
-      this.checkCollisionsAgainst(canidates);
       this.context.restore();
       if (this.currentNode) {
         this.y -= this.currentNode.dupe.vertical;
@@ -83,7 +76,6 @@ Sprite = function () {
       this.context.save();
       this.configureTransform();
       this.draw();
-      this.checkCollisionsAgainst(canidates);
       this.context.restore();
       if (this.currentNode) {
         this.x -= this.currentNode.dupe.horizontal;
@@ -169,48 +161,8 @@ Sprite = function () {
     this.context.closePath();
     this.context.stroke();
   };
-  this.findCollisionCanidates = function () {
-    if (!this.visible || !this.currentNode) return [];
-    var cn = this.currentNode;
-    var canidates = [];
-    if (cn.nextSprite) canidates.push(cn.nextSprite);
-    if (cn.north.nextSprite) canidates.push(cn.north.nextSprite);
-    if (cn.south.nextSprite) canidates.push(cn.south.nextSprite);
-    if (cn.east.nextSprite) canidates.push(cn.east.nextSprite);
-    if (cn.west.nextSprite) canidates.push(cn.west.nextSprite);
-    if (cn.north.east.nextSprite) canidates.push(cn.north.east.nextSprite);
-    if (cn.north.west.nextSprite) canidates.push(cn.north.west.nextSprite);
-    if (cn.south.east.nextSprite) canidates.push(cn.south.east.nextSprite);
-    if (cn.south.west.nextSprite) canidates.push(cn.south.west.nextSprite);
-    return canidates
-  };
-  this.checkCollisionsAgainst = function (canidates) {
-    for (var i = 0; i < canidates.length; i++) {
-      var ref = canidates[i];
-      do {
-        this.checkCollision(ref);
-        ref = ref.nextSprite;
-      } while (ref)
-    }
-  };
-  this.checkCollision = function (other) {
-    if (!other.visible ||
-         this == other ||
-         this.collidesWith.indexOf(other.name) == -1) return;
-    var trans = other.transformedPoints();
-    var px, py;
-    var count = trans.length/2;
-    for (var i = 0; i < count; i++) {
-      px = trans[i*2];
-      py = trans[i*2 + 1];
-      // mozilla doesn't take into account transforms with isPointInPath >:-P
-      if (($.browser.mozilla) ? this.pointInPolygon(px, py) : this.context.isPointInPath(px, py)) {
-        other.collision(this);
-        this.collision(other);
-        return;
-      }
-    }
-  };
+
+
   this.pointInPolygon = function (x, y) {
     var points = this.transformedPoints();
     var j = 2;
@@ -230,8 +182,7 @@ Sprite = function () {
     }
     return oddNodes;
   };
-  this.collision = function () {
-  };
+
   this.die = function () {
     this.visible = false;
     this.reap = true;
@@ -254,26 +205,7 @@ Sprite = function () {
     this.transPoints = trans; // cache translated points
     return trans;
   };
-  this.isClear = function () {
-    if (this.collidesWith.length == 0) return true;
-    var cn = this.currentNode;
-    if (cn == null) {
-      var gridx = Math.floor(this.x / GRID_SIZE);
-      var gridy = Math.floor(this.y / GRID_SIZE);
-      gridx = (gridx >= this.grid.length) ? 0 : gridx;
-      gridy = (gridy >= this.grid[0].length) ? 0 : gridy;
-      cn = this.grid[gridx][gridy];
-    }
-    return (cn.isEmpty(this.collidesWith) &&
-            cn.north.isEmpty(this.collidesWith) &&
-            cn.south.isEmpty(this.collidesWith) &&
-            cn.east.isEmpty(this.collidesWith) &&
-            cn.west.isEmpty(this.collidesWith) &&
-            cn.north.east.isEmpty(this.collidesWith) &&
-            cn.north.west.isEmpty(this.collidesWith) &&
-            cn.south.east.isEmpty(this.collidesWith) &&
-            cn.south.west.isEmpty(this.collidesWith));
-  };
+
   this.wrapPostMove = function () {
     if (this.x > Game.canvasWidth) {
       this.x = 0;

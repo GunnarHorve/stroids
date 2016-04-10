@@ -14,7 +14,6 @@ Ship = function () {
 
   this.postMove = this.wrapPostMove;
 
-  this.collidesWith = [];
 }
 
 Ship.prototype = new Sprite();

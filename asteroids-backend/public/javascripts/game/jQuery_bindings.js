@@ -1,15 +1,13 @@
 $(function () {
   var canvas = $("#canvas");
-  Game.canvasWidth  = canvas.width();
-  Game.canvasHeight = canvas.height();
 
   var context = canvas[0].getContext("2d");
 
   Text.context = context;
   Text.face = vector_battle;
 
-  var gridWidth = Math.round(Game.canvasWidth / GRID_SIZE);
-  var gridHeight = Math.round(Game.canvasHeight / GRID_SIZE);
+  var gridWidth = Math.round(canvas.width() / GRID_SIZE);
+  var gridHeight = Math.round(canvas.height() / GRID_SIZE);
   var grid = new Array(gridWidth);
   for (var i = 0; i < gridWidth; i++) {
     grid[i] = new Array(gridHeight);
@@ -31,51 +29,24 @@ $(function () {
 
   // set up borders
   for (var i = 0; i < gridWidth; i++) {
-    grid[i][0].dupe.vertical            =  Game.canvasHeight;
-    grid[i][gridHeight-1].dupe.vertical = -Game.canvasHeight;
+    grid[i][0].dupe.vertical            =  canvas.height();
+    grid[i][gridHeight-1].dupe.vertical = -canvas.height();
   }
 
   for (var j = 0; j < gridHeight; j++) {
-    grid[0][j].dupe.horizontal           =  Game.canvasWidth;
-    grid[gridWidth-1][j].dupe.horizontal = -Game.canvasWidth;
+    grid[0][j].dupe.horizontal           =  canvas.width();
+    grid[gridWidth-1][j].dupe.horizontal = -canvas.width();
   }
 
   var sprites = [];
-  Game.sprites = sprites;
 
   // so all the sprites can use it
   Sprite.prototype.context = context;
   Sprite.prototype.grid    = grid;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
-  var ship = new Ship();
-
-  ship.x = Game.canvasWidth / 2;
-  ship.y = Game.canvasHeight / 2;
-
-  sprites.push(ship);
-
-  ship.bullets = [];
-  for (var i = 0; i < 10; i++) {
-    var bull = new Bullet();
-    ship.bullets.push(bull);
-    sprites.push(bull);
-  }
-  Game.ship = ship;
-
-  var extraDude = new Ship();
-  extraDude.scale = 0.6;
-  extraDude.visible = true;
-  extraDude.preMove = null;
-  extraDude.children = [];
-
   var i, j = 0;
 
-  var paused = false;
-  var showFramerate = false;
-  var avgFramerate = 0;
-  var frameCount = 0;
-  var elapsedCounter = 0;
 
   var lastFrame = Date.now();
   var thisFrame;
@@ -83,8 +54,6 @@ $(function () {
   var delta;
 
   var canvasNode = canvas[0];
-
-
 
   // shim layer with setTimeout fallback
   // from here:
@@ -103,22 +72,6 @@ $(function () {
   var mainLoop = function () {
     context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
 
-    Game.FSM.execute();
-
-    if (KEY_STATUS.g) {
-      context.beginPath();
-      for (var i = 0; i < gridWidth; i++) {
-        context.moveTo(i * GRID_SIZE, 0);
-        context.lineTo(i * GRID_SIZE, Game.canvasHeight);
-      }
-      for (var j = 0; j < gridHeight; j++) {
-        context.moveTo(0, j * GRID_SIZE);
-        context.lineTo(Game.canvasWidth, j * GRID_SIZE);
-      }
-      context.closePath();
-      context.stroke();
-    }
-
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
     lastFrame = thisFrame;
@@ -135,37 +88,7 @@ $(function () {
       }
     }
 
-    // score
-    var score_text = ''+Game.score;
-    Text.renderText(score_text, 18, Game.canvasWidth - 14 * score_text.length, 20);
-
-    // extra dudes
-    for (i = 0; i < Game.lives; i++) {
-      context.save();
-      extraDude.x = Game.canvasWidth - (8 * (i + 1));
-      extraDude.y = 32;
-      extraDude.configureTransform();
-      extraDude.draw();
-      context.restore();
-    }
-
-    if (showFramerate) {
-      Text.renderText(''+avgFramerate, 24, Game.canvasWidth - 38, Game.canvasHeight - 2);
-    }
-
-    frameCount++;
-    elapsedCounter += elapsed;
-    if (elapsedCounter > 1000) {
-      elapsedCounter -= 1000;
-      avgFramerate = frameCount;
-      frameCount = 0;
-    }
-
-    if (paused) {
-      Text.renderText('PAUSED', 72, Game.canvasWidth/2 - 160, 120);
-    } else {
-      requestAnimFrame(mainLoop, canvasNode);
-    }
+    requestAnimFrame(mainLoop, canvasNode);
   };
 
   mainLoop();

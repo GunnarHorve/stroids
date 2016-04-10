@@ -4,9 +4,6 @@ Bullet = function () {
   this.bridgesH = false;
   this.bridgesV = false;
   this.postMove = this.wrapPostMove;
-  // asteroid can look for bullets so doesn't have
-  // to be other way around
-  //this.collidesWith = ["asteroid"];
 
   this.configureTransform = function () {};
   this.draw = function () {
@@ -20,15 +17,6 @@ Bullet = function () {
       this.context.lineTo(this.x-1, this.y+1);
       this.context.stroke();
       this.context.restore();
-    }
-  };
-  this.preMove = function (delta) {
-    if (this.visible) {
-      this.time += delta;
-    }
-    if (this.time > 50) {
-      this.visible = false;
-      this.time = 0;
     }
   };
 
