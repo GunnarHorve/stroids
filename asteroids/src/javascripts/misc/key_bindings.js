@@ -2,18 +2,13 @@ $(window).keydown(function (e) {
 
   if(!Game.chatmode &&(KEY_CODES[e.keyCode] == 't' || KEY_CODES[e.keyCode] == '/')){
     Game.chatmode = true;
-    console.log("hi");
     return;
-  }
+  }else
   if(Game.chatmode) {
     handleChat(e);
-  }
-
-  if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
+  }else if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
     return;
-  }
-
-  if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
+  }else if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
     var rad = ((Game.ship.rot-90) * Math.PI)/180;
     Game.ship.children.exhaust.visible = true;
     socket.emit('move_start',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)]);
@@ -44,7 +39,7 @@ $(window).keydown(function (e) {
 function handleChat(e){
     if(KEY_CODES[e.keyCode] === 'enter'){
       Game.currentMessage = Game.currentMessage.substring(1, Game.currentMessage.length);
-      socket.emit('chat',Game.playerName,Game.currentMessage);
+      addChatToScreen(Game.currentMessage);
       Game.chatmode = false;
       Game.currentMessage = ">";
       return;
@@ -64,8 +59,7 @@ function handleChat(e){
         //
 
 
-socket.on('chat', function(name, msg){
-  var string = name+': '+msg;
+function addChatToScreen(string){
   var tempA = Game.messages[0];
   var tempA2 = Game.messageTimer[0];
   var tempB = "";
@@ -80,4 +74,4 @@ socket.on('chat', function(name, msg){
     }
     Game.messages[0] = string;
     Game.messageTimer[0] = 600;
-});
+}
