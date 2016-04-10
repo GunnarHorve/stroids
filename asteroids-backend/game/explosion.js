@@ -1,3 +1,5 @@
+var Sprite = require('./Sprite');
+
 Explosion = function () {
   this.init("explosion");
 
@@ -37,3 +39,4 @@ Explosion = function () {
   };
 };
 Explosion.prototype = new Sprite();
+module.exports = Explosion;
