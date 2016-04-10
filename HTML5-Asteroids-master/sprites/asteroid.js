@@ -18,7 +18,9 @@ Asteroid = function () {
   this.collidesWith = [];
 
   this.collision = function (other) {
-    SFX.explosion();
+    //SFX.explosion();
+    var boomSound = document.getElementById("kaboomSound");
+    kaboomSound.play();
     if (other.name == "bullet") Game.score += 120 / this.scale;
     this.scale /= 3;
     if (this.scale > 0.5) {

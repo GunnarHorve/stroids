@@ -1,6 +1,6 @@
 SFX = {
   laser:     new Audio('pewPew.wav'),
-  explosion: new Audio('kaboom.wav')
+  explosion: new Audio('kaboom.wav'),
 };
 
 // preload audio

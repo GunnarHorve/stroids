@@ -46,7 +46,10 @@ Ship = function () {
         this.bulletCounter = 10;
         for (var i = 0; i < this.bullets.length; i++) {
           if (!this.bullets[i].visible) {
-            SFX.laser();
+            //SFX.laser();
+            var laserSound = document.getElementById("pewPewSound");
+            laserSound.load();
+            laserSound.play();
             var bullet = this.bullets[i];
             var rad = ((this.rot-90) * Math.PI)/180;
             var vectorx = Math.cos(rad);
@@ -71,7 +74,10 @@ Ship = function () {
   };
 
   this.collision = function (other) {
-    SFX.explosion();
+    //SFX.explosion();
+    var boomSound = document.getElementById("kaboomSound");
+    boomSound.load();
+    boomSound.play();
     Game.explosionAt(other.x, other.y);
     Game.FSM.state = 'player_died';
     this.visible = false;
