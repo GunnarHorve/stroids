@@ -66,7 +66,7 @@ Game = {
           Game.sprites[i].visible = false;
         }
       }
-      Game.totalAsteroids = 5;
+      Game.totalAsteroids = 20;
       Game.spawnAsteroids();
 
       this.state = 'run';

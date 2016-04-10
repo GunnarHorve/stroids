@@ -41,7 +41,6 @@ Asteroid = function () {
       }
     }
 
-
     this.scale /= 3;
     if (this.scale > 0.5) {
       // break into fragments
@@ -64,6 +63,15 @@ Asteroid = function () {
     }
     Game.explosionAt(other.x, other.y);
     this.die();
+    val density = 0;
+    for(i=0;i<Game.sprites.length;i++){
+      if(Game.sprites[i].name = 'asteroid'){
+        density+=Game.sprites[i].scale;
+      }
+    }
+    if(density < 100){
+      Game.spawnAsteroids(3);
+    }
   };
 
 };
