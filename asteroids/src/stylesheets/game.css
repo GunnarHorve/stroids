@@ -60,5 +60,8 @@
 }
 #sidePic{
   position:absolute;
-  //clip:rect(0,100px, 200px, 0);
+  /*clip:rect(0,100px, 200px, 0);*/
+}
+#game-Container{
+  overflow:hidden;
 }

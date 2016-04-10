@@ -1,4 +1,9 @@
 $(window).keydown(function (e) {
+
+  if(KEY_CODES[e.keyCode] == 't' || KEY_CODES[e.keyCode] == '/'){
+    Game.chatmode = true;
+    return;
+  }
   if(Game.chatmode) {
     handleChat(e);
   }
@@ -18,8 +23,6 @@ $(window).keydown(function (e) {
     var laserSound = document.getElementById("pewPewSound");
     laserSound.load();
     laserSound.play();
-  } else if(KEY_CODES[e.keyCode]==='/' || KEY_CODES[e.keyCode]==='t') {
-    Game.chatmode = true;
   }
 
   KEY_STATUS[KEY_CODES[e.keyCode]] = true
