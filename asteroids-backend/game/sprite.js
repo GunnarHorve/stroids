@@ -179,10 +179,6 @@ var Sprite = function () {
     if (!other.visible ||
          this == other ||
          this.collidesWith.indexOf(other.name) == -1) {return;};
-    // console.log('checking single collision');
-    if(other.name == 'bullet'){
-      console.log('bullet is close');
-    }
     var trans = other.transformedPoints();
     var px, py;
     var count = trans.length/2;
@@ -224,7 +220,7 @@ var Sprite = function () {
   };
   this.die = function () {
     if(this.time <= 20){return;}
-    console.log('killing thing');
+    // console.log('killing thing');
     this.visible = false;
     this.reap = true;
     if (this.currentNode) {
@@ -235,7 +231,7 @@ var Sprite = function () {
     if(this.name == 'bullet'){return;}
     var io = require('../bin/www');
     io.emit('despawn',this.id);
-    console.log(this.name+'  '+this.id);
+    // console.log(this.name+'  '+this.id);
   };
   this.transformedPoints = function () {
     if (this.transPoints) return this.transPoints;

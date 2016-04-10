@@ -28,19 +28,23 @@ Asteroid = function () {
     console.log('asteroid explodes');
     // SFX.explosion();
     var Game = require('../game/Game')();
+    var io = require('../bin/www');
     if (other.name == "bullet") {
       for(i=0;i<Game.sprites.length;i++){
-        if(other.id == Game.sprites[i].id && Game.sprites.name = 'ship'){
-          Game.spites[i].score += 120 / this.scale;
+        if(other.id == Game.sprites[i].id && Game.sprites[i].name == 'ship'){
+          Game.sprites[i].score += 1200 / this.scale;
+          console.log(Game.sprites[i].score);
+          io.emit('new_score',Game.sprites[i].id,Game.sprites[i].score);
           break;
         }
       }
-
     }
+
+
     this.scale /= 3;
     if (this.scale > 0.5) {
       // break into fragments
-      var io = require('../bin/www');
+
       for (var i = 0; i < 3; i++) {
         var roid = new Asteroid();
         roid.x = this.x;
