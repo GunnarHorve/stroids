@@ -39,17 +39,18 @@ $(window).keydown(function (e) {
 
 function handleChat(e){
     if(KEY_CODES[e.keyCode] === 'enter'){
-      addChatToScreen(currentMessage);
+      Game.currentMessage = Game.currentMessage.substring(1, Game.currentMessage.length);
+      addChatToScreen(Game.currentMessage);
       Game.chatmode = false;
-      currentMessage = "";
+      Game.currentMessage = ">";
       return;
     }
         //talk
       var input = String.fromCharCode(e.keyCode).toLowerCase();
       if(/[a-zA-Z0-9-_ ]/.test(input)){
-        currentMessage = currentMessage + input;
+        Game.currentMessage = Game.currentMessage + input;
       }else if(e.keyCode == 8){//backspace
-        currentMessage = currentMessage.substring(0, currentMessage.length - 1);
+        Game.currentMessage = Game.currentMessage.substring(0, currentMessage.length - 1);
       }
     }
         //Game.isChatting = false;
@@ -60,11 +61,11 @@ function handleChat(e){
 
 
 function addChatToScreen(string){
-  var tempA = messages[0];
-  var tempA2 = messageTimer[0];
+  var tempA = Game.messages[0];
+  var tempA2 = Game.messageTimer[0];
   var tempB = "";
   var tempB2 = 0;
-    for(var i = 1; i < messages.length; i++){
+    for(var i = 1; i < Game.messages.length; i++){
       tempB = Game.messages[i];
       tempB2 = Game.messageTimer[i];
       Game.messages[i] = tempA;
@@ -73,5 +74,5 @@ function addChatToScreen(string){
       tempA2 = tempB2;
     }
     Game.messages[0] = string;
-    Game.messageTimer[0] = 1000;
+    Game.messageTimer[0] = 600;
 }

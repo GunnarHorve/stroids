@@ -114,19 +114,20 @@ var leaderScores = [100, 200, 300, 400, 500];
       }
     }
 
+    for(var i = 0; i < Game.messages.length; i++){
+      if(Game.messageTimer[i] > 0){
+        textY = Game.canvasHeight - 30 - 15*i;
+        context.fillText(Game.messages[i], 10, textY);
+        Game.messageTimer[i]--;
+      }
+    }
+    //chat
+
     //leaderboard
     for(var i = 0; i < leaderNames.length; i++){
       textY = 20 + 20*(4-i);
       var boardRow = (5-i) + ": " + leaderNames[i] + " " + leaderScores[i];
       context.fillText(boardRow, Game.canvasWidth-8*boardRow.length, textY);
-    }
-
-    for(var i = 0; i < messages.length; i++){
-      if(messageTimer[i] > 0){
-        textY = Game.canvasHeight - 30 - 15*i;
-        context.fillText(messages[i], 10, textY);
-        messageTimer[i]--;
-      }
     }
 
     // display score
