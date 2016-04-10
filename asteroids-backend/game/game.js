@@ -1,4 +1,4 @@
-var Asteroid = require('./Asteroid');
+var Asteroid = require('./asteroid');
 var Explosion = require('./explosion');
 
 Game = {
