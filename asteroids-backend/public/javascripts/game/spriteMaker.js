@@ -23,10 +23,10 @@ socket.on('data',function(pos,vel,acc,scale,type) {
 });
 
 
-despawn = function(index) { //please call this for ALL despawns, including bullets & explosions
+socket.on('despawn', function(index) { //please call this for ALL despawns, including bullets & explosions
   var thing;
   for(i=0;i<Game.sprites.length;i++){
-    if(Game.sprites[i].id = index){
+    if(Game.sprites[i].id == index){
       thing = Game.sprites[i];
     }
   }
@@ -37,7 +37,7 @@ despawn = function(index) { //please call this for ALL despawns, including bulle
     boomSound.play();
   }
   thing.die();
-}
+});
 
 $(window).keydown(function (e) {
   if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
