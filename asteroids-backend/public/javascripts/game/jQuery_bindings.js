@@ -70,6 +70,16 @@ var leaderNames = ["bob1", "bob2", "bob3", "bob4", "bob5"];
 var leaderScores = [100, 200, 300, 400, 500];
 //leaderboard work end
 
+//didn't know where to put this, so here
+window.addEventListener('resize', function(event){
+  var passWidth = $(window).width();
+  var passHeight = $(window).height();
+  Game.resizeThings(passWidth, passHeight);
+  Game.width = passWidth * 0.9;
+  Game.height = passHeight*0.9;
+});
+//end of confusion
+
   // shim layer with setTimeout fallback
   // from here:
   // http://paulirish.com/2011/requestanimationframe-for-smart-animating/

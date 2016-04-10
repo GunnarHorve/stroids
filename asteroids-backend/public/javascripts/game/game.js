@@ -27,6 +27,22 @@ Game = {
     Game.sprites.push(splosion);
   },
 
+  resizeThings: function(width, height){
+    //console.log(canvasWidth + " : " + canvasHeight);
+    canvasWidth = width*0.9;
+    canvasHeight = height*0.9;
+
+    //console.log(canvasWidth + " : " + canvasHeight);
+    xScale = canvasWidth/800;
+    yScale = canvasWidth/600;
+
+    var can = document.getElementById("canvas");
+    can.style.width = canvasWidth;
+    can.style.height = canvasHeight;
+
+    console.log("--------------");
+  },
+
   FSM: {
     boot: function () {
       this.state = 'waiting';
