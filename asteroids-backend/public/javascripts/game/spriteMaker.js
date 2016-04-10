@@ -11,7 +11,7 @@ socket.on('data',function(pos,vel,acc,scale,type) {
     toAdd.id = scale; //id if ship (shhhhhhhhhhhh)
     toAdd.acc.x = acc[0]; toAdd.acc.y = acc[1];toAdd.vel.rot = vel[2];
   } else if (type === 'bullet') {
-    toAdd = new Bullet()
+    toAdd = new Bullet();
   } else if (type === 'explosion'){
     toAdd = new Explosion();
   }
