@@ -7,14 +7,13 @@ Game = {
   lives: 0,
   id: 1,
 
-  canvasWidth: 800,
-  canvasHeight: 600,
+  canvasWidth: 2400,
+  canvasHeight: 1800,
 
   sprites: [],
   ship: null,
 
   spawnAsteroids: function (count) {
-    console.log('spawing asteroids');
     if (!count) count = this.totalAsteroids;
     for (var i = 0; i < count; i++) {
       var roid = new Asteroid();
@@ -74,8 +73,8 @@ Game = {
     },
     spawn_ship: function () {
       console.log('spawning ship');
-      Game.ship.x = Game.canvasWidth / 2;
-      Game.ship.y = Game.canvasHeight / 2;
+      Game.ship.x = 400;//Game.canvasWidth / 2;
+      Game.ship.y = 300;//Game.canvasHeight / 2;
       console.log(Game.id)
       if (Game.ship.isClear()) {
         Game.ship.rot = 0;

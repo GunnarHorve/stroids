@@ -13,8 +13,7 @@ Ship = function () {
   this.bulletCounter = 0;
 
   this.postMove = this.wrapPostMove;
-
-
+  
   this.preMove = function (delta) {
   if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 8) {
       this.vel.x *= 0.95;

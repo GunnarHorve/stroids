@@ -8,8 +8,8 @@ $(function () {
 
   context.font = "15px Arial";
 
-  var gridWidth = Math.round(canvas.width() / GRID_SIZE);
-  var gridHeight = Math.round(canvas.height() / GRID_SIZE);
+  var gridWidth = Math.round(Game.canvasWidth / GRID_SIZE);
+  var gridHeight = Math.round(Game.canvasHeight / GRID_SIZE);
   var grid = new Array(gridWidth);
   for (var i = 0; i < gridWidth; i++) {
     grid[i] = new Array(gridHeight);
@@ -31,13 +31,13 @@ $(function () {
 
   // set up borders
   for (var i = 0; i < gridWidth; i++) {
-    grid[i][0].dupe.vertical            =  canvas.height();
-    grid[i][gridHeight-1].dupe.vertical = -canvas.height();
+    grid[i][0].dupe.vertical            =  Game.canvasHeight;
+    grid[i][gridHeight-1].dupe.vertical = -Game.canvasHeight;
   }
 
   for (var j = 0; j < gridHeight; j++) {
-    grid[0][j].dupe.horizontal           =  canvas.width();
-    grid[gridWidth-1][j].dupe.horizontal = -canvas.width();
+    grid[0][j].dupe.horizontal           =  Game.canvasWidth;
+    grid[gridWidth-1][j].dupe.horizontal = -Game.canvasWidth;
   }
 
   var sprites = [];
@@ -65,6 +65,7 @@ var leaderScores = [100, 200, 300, 400, 500];
   // shim layer with setTimeout fallback
   // from here:
   // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+
   window.requestAnimFrame = (function () {
     return  window.requestAnimationFrame       ||
             window.webkitRequestAnimationFrame ||
@@ -77,8 +78,7 @@ var leaderScores = [100, 200, 300, 400, 500];
   })();
 
   var mainLoop = function () {
-    context.clearRect(0, 0, canvas.width(), canvas.height());
-
+    context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
     Game.FSM.execute();
 
     thisFrame = Date.now();

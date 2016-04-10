@@ -74,8 +74,8 @@ Sprite.prototype.matrix  = new Matrix(2, 3);
 
 var ship = new Ship();
 
-ship.x = Game.canvasWidth / 2;
-ship.y = Game.canvasHeight / 2;
+ship.x = 400;//Game.canvasWidth / 2;
+ship.y = 300;//Game.canvasHeight / 2;
 ship.id = Game.id++;
 console.log(Game.id);
 
