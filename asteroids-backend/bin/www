@@ -180,6 +180,10 @@ io.on('connection',function(socket){
     [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
     // console.log(ship.x+' '+ship.y);
   })
+
+  socket.on('chat',function(name,msg){
+    socket.emit('chat',name,msg);
+  })
 });
 
 var findShip = function(id){

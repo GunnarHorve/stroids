@@ -44,7 +44,7 @@ $(window).keydown(function (e) {
 function handleChat(e){
     if(KEY_CODES[e.keyCode] === 'enter'){
       Game.currentMessage = Game.currentMessage.substring(1, Game.currentMessage.length);
-      addChatToScreen(Game.currentMessage);
+      socket.emit('chat',Game.playerName,Game.currentMessage);
       Game.chatmode = false;
       Game.currentMessage = ">";
       return;
@@ -64,7 +64,8 @@ function handleChat(e){
         //
 
 
-function addChatToScreen(string){
+socket.on('chat', function(name, msg){
+  var string = name+': '+msg;
   var tempA = Game.messages[0];
   var tempA2 = Game.messageTimer[0];
   var tempB = "";
@@ -79,4 +80,4 @@ function addChatToScreen(string){
     }
     Game.messages[0] = string;
     Game.messageTimer[0] = 600;
-}
+});
