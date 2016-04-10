@@ -47,7 +47,14 @@
 }
 #Title{
     margin-left: 350px;
+    /*color: #D0F8F;*/
+    color:black;
+    text-shadow: 0 0 1px #A5F1FF, 0 0 2px #A5F1FF,
+         0 0 4px #A5F1FF;
 }
 #subTitle{
-  margin-left: 280px;
+  margin-left: 270px;
+  color: black;
+  text-shadow: 0 0 1px #A5F1FF, 0 0 2px #A5F1FF,
+       0 0 4px #A5F1FF;
 }

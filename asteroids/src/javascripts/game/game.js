@@ -9,6 +9,8 @@ Game = {
   sprites: [],
   ship: null,
 
+  playerName: "",
+
   //message work
   chatmode: false,
   currentMessage: ">",
@@ -55,6 +57,14 @@ Game = {
     },
     execute: function () {
      this[this.state]();
+   },
+   getName: function(){
+     var tempName = prompt("Please enter a name", "John Wick");
+     if(tempName == null){
+       Game.playerName = "Idiot #" + Math.random() * 100000;
+     }else{
+       Game.playerName = tempName;
+     }
    },
    state: 'boot'
  }

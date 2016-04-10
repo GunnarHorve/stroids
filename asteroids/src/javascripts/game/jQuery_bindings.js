@@ -43,6 +43,8 @@ $(function () {
   var sprites = [];
   Game.sprites = sprites;
 
+  Game.FSM.getName();
+
   // so all the sprites can use it
   Sprite.prototype.context = context;
   Sprite.prototype.grid    = grid;
