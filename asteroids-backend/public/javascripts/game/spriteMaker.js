@@ -1,6 +1,5 @@
 var socket = io.connect('http://localhost:3000');
 
-
 socket.on('data',function(pos,vel,acc,scale,type) {
   var toAdd;
   if(type === 'asteroid') {
@@ -12,7 +11,7 @@ socket.on('data',function(pos,vel,acc,scale,type) {
     toAdd.id = scale; //id if ship (shhhhhhhhhhhh)
     toAdd.acc.x = acc[0]; toAdd.acc.y = acc[1];toAdd.vel.rot = vel[2];
   } else if (type === 'bullet') {
-    toAdd = new Bullet()
+    toAdd = new Bullet();
   } else if (type === 'explosion'){
     toAdd = new Explosion();
   }
@@ -22,7 +21,6 @@ socket.on('data',function(pos,vel,acc,scale,type) {
   console.log(toAdd.id);
   Game.sprites.push(toAdd);
 });
-
 
 socket.on('despawn', function(index) { //please call this for ALL despawns, including bullets & explosions
   var thing;
@@ -38,7 +36,7 @@ socket.on('despawn', function(index) { //please call this for ALL despawns, incl
     var boomSound = document.getElementById("kaboomSound");
     boomSound.load();
     boomSound.play();
-  }
+}
   thing.die();
 });
 
