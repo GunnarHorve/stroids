@@ -89,6 +89,11 @@ $(function () {
   var messageTimer=[600, 500, 490, 300, 220, 210, 100, 10];
   //message work end
 
+  //leaderboard work top 5
+  var leaderNames = ["bob1", "bob2", "bob3", "bob4", "bob5"];
+  var leaderScores = [100, 200, 300, 400, 500];
+  //leaderboard work end
+
 
   var canvasNode = canvas[0];
 
@@ -129,7 +134,8 @@ $(function () {
 
     // score
     var score_text = ''+Game.score;
-    Text.renderText(score_text, 18, Game.canvasWidth - 14 * score_text.length, 20);
+    context.fillText(score_text, 15, 20);
+    //Text.renderText(score_text, 18, Game.canvasWidth - 14 * score_text.length, 20);
 
     // extra dudes
     for (i = 0; i < Game.lives; i++) {
@@ -146,6 +152,14 @@ $(function () {
       elapsedCounter -= 1000;
     }
 
+    //leaderboard
+    for(var i = 0; i < leaderNames.length; i++){
+      textY = 20 + 20*(4-i);
+      var boardRow = (5-i) + ": " + leaderNames[i] + " " + leaderScores[i];
+      context.fillText(boardRow, Game.canvasWidth-8*boardRow.length, textY);
+    }
+
+    //chat
     if(chatmode){
       context.fillText(currentMessage, 10, Game.canvasHeight - 10);
       for(i = 0; i < messages.length; i++){
@@ -154,7 +168,7 @@ $(function () {
       }
     }
 
-    for(i = 0; i < messages.length; i++){
+    for(var i = 0; i < messages.length; i++){
       if(messageTimer[i] > 0){
         textY = Game.canvasHeight - 30 - 15*i;
         context.fillText(messages[i], 10, textY);
@@ -162,6 +176,7 @@ $(function () {
       }
     }
 
+      checkHighScore("da bes", Game.score);
       requestAnimFrame(mainLoop, canvasNode);
   };
 
@@ -182,6 +197,43 @@ $(function () {
       }
       messages[0] = string;
       messageTimer[0] = 1000;
+  }
+
+//checks the given score against the lowest score and adds to list if need be
+  function checkHighScore(name, score){
+    var lowestHigh = leaderScores[0];//scores are 0-4 lowest to highest
+    if (score > lowestHigh){
+      leaderScores[0] = score;
+      leaderNames[0] = name;
+      forceHighScoreSort();
+    }
+  }
+
+  function forceHighScoreSort(){
+    var temp = "";
+    var temp2 = 0;
+    var j = 0;
+    for(var i = 1; i < leaderNames.length; i++){
+      j = i;
+      while(j > 0 && leaderScores[j-1] > leaderScores[j]){
+        swapScore(j,j-1);
+        j--;
+      }
+    }
+  }
+
+  function swapScore(index1, index2){
+    temp1 = leaderNames[index1];
+    temp2 = leaderScores[index1];
+    leaderNames[index1] = leaderNames[index2];
+    leaderScores[index1] = leaderScores[index2];
+    leaderNames[index2] = temp1;
+    leaderScores[index2] = temp2;
+  }
+
+  var resetHighScores = function(){
+    leaderNames = ["", "", "", "", ""];
+    leaderScores = [0, 0, 0, 0, 0];
   }
 
   $(window).keydown(function (e) {
@@ -220,6 +272,7 @@ $(function () {
       break;
       case 'enter':
       if(!chatmode){
+        forceHighScoreSort();
         break;
       }
       chatmode = false;
