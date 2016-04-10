@@ -1,4 +1,4 @@
-var Sprite = require('./sprite');
+var Sprite = require('./Sprite');
 
 Asteroid = function () {
   this.init("asteroid",
@@ -27,7 +27,7 @@ Asteroid = function () {
   this.collision = function (other) {
     console.log('asteroid explodes');
     // SFX.explosion();
-    var Game = require('../game/game')();
+    var Game = require('../game/Game')();
     var io = require('../bin/www');
     if (other.name == "bullet") {
       for(i=0;i<Game.sprites.length;i++){
@@ -63,7 +63,7 @@ Asteroid = function () {
     }
     Game.explosionAt(other.x, other.y);
     this.die();
-    val density = 0;
+    var density = 0;
     for(i=0;i<Game.sprites.length;i++){
       if(Game.sprites[i].name = 'asteroid'){
         density+=Game.sprites[i].scale;
