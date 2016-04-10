@@ -177,42 +177,42 @@ socket.on('despawn', function(index) { //please call this for ALL despawns, incl
   }
 });
 
-$(window).keydown(function (e) {
-  if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
-    return;
-  }
-
-  if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
-    var rad = ((Game.ship.rot-90) * Math.PI)/180;
-    Game.ship.children.exhaust.visible = true;
-    console.log('trying to move');
-    socket.emit('move',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)],Game.ship.id);
-  }else if(KEY_CODES[e.keyCode]==='left') { //please sync ship
-    socket.emit('turn',[true,false],Game.ship.id);
-  }else if(KEY_CODES[e.keyCode]==='right'){
-    socket.emit('turn',[false,true],Game.ship.id);
-  }else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
-    if(Game.ship !=null){
-    socket.emit('bullet fire',Game.ship.id);
-    var laserSound = document.getElementById("pewPewSound");
-    laserSound.load();
-    laserSound.play();
-  }
-  }
-
-  KEY_STATUS[KEY_CODES[e.keyCode]] = true
-
-}).keyup(function (e) {
-    if(KEY_CODES[e.keyCode]==='up'){
-      Game.ship.children.exhaust.visible = false;
-      socket.emit('move',[0,0],Game.ship.id);
-    } else if(KEY_CODES[e.keyCode]==='left'){
-      socket.emit('turn',[false,KEY_STATUS.right],Game.ship.id);
-    }else if(KEY_CODES[e.keyCode]==='right'){
-      socket.emit('turn',[KEY_STATUS.left,false],Game.ship.id);
-    }
-
-    KEY_STATUS[KEY_CODES[e.keyCode]] = false;
-
-  }
-);
+// $(window).keydown(function (e) {
+//   if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
+//     return;
+//   }
+//
+//   if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
+//     var rad = ((Game.ship.rot-90) * Math.PI)/180;
+//     Game.ship.children.exhaust.visible = true;
+//     console.log('trying to move');
+//     socket.emit('move',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)],Game.ship.id);
+//   }else if(KEY_CODES[e.keyCode]==='left') { //please sync ship
+//     socket.emit('turn',[true,false],Game.ship.id);
+//   }else if(KEY_CODES[e.keyCode]==='right'){
+//     socket.emit('turn',[false,true],Game.ship.id);
+//   }else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
+//     if(Game.ship !=null){
+//     socket.emit('bullet fire',Game.ship.id);
+//     var laserSound = document.getElementById("pewPewSound");
+//     laserSound.load();
+//     laserSound.play();
+//   }
+//   }
+//
+//   KEY_STATUS[KEY_CODES[e.keyCode]] = true
+//
+// }).keyup(function (e) {
+//     if(KEY_CODES[e.keyCode]==='up'){
+//       Game.ship.children.exhaust.visible = false;
+//       socket.emit('move',[0,0],Game.ship.id);
+//     } else if(KEY_CODES[e.keyCode]==='left'){
+//       socket.emit('turn',[false,KEY_STATUS.right],Game.ship.id);
+//     }else if(KEY_CODES[e.keyCode]==='right'){
+//       socket.emit('turn',[KEY_STATUS.left,false],Game.ship.id);
+//     }
+//
+//     KEY_STATUS[KEY_CODES[e.keyCode]] = false;
+//
+//   }
+// );

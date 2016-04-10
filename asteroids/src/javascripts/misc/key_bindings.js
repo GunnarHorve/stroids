@@ -2,28 +2,32 @@ $(window).keydown(function (e) {
 
   if(!Game.chatmode &&(KEY_CODES[e.keyCode] == 't' || KEY_CODES[e.keyCode] == '/')){
     Game.chatmode = true;
-    console.log("hi");
     return;
-  }
-  if(Game.chatmode) {
+  } else if(Game.chatmode) {
     handleChat(e);
+    return;
   }
 
   if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
     return;
   }
 
-  if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
+if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
     var rad = ((Game.ship.rot-90) * Math.PI)/180;
     Game.ship.children.exhaust.visible = true;
-    socket.emit('move_start',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)]);
-  } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') { //please sync ship
-    socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
-  } else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
-    socket.emit('bullet fire');
+    console.log('trying to move');
+    socket.emit('move',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)],Game.ship.id);
+  }else if(KEY_CODES[e.keyCode]==='left') { //please sync ship
+    socket.emit('turn',[true,false],Game.ship.id);
+  }else if(KEY_CODES[e.keyCode]==='right'){
+    socket.emit('turn',[false,true],Game.ship.id);
+  }else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
+    if(Game.ship !=null){
+    socket.emit('bullet fire',Game.ship.id);
     var laserSound = document.getElementById("pewPewSound");
     laserSound.load();
     laserSound.play();
+  }
   }
 
   KEY_STATUS[KEY_CODES[e.keyCode]] = true
@@ -31,9 +35,11 @@ $(window).keydown(function (e) {
 }).keyup(function (e) {
     if(KEY_CODES[e.keyCode]==='up'){
       Game.ship.children.exhaust.visible = false;
-      socket.emit('move_finish');
-    } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') {
-      socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
+      socket.emit('move',[0,0],Game.ship.id);
+    } else if(KEY_CODES[e.keyCode]==='left'){
+      socket.emit('turn',[false,KEY_STATUS.right],Game.ship.id);
+    }else if(KEY_CODES[e.keyCode]==='right'){
+      socket.emit('turn',[KEY_STATUS.left,false],Game.ship.id);
     }
 
     KEY_STATUS[KEY_CODES[e.keyCode]] = false;
