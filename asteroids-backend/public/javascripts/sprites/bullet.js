@@ -20,6 +20,16 @@ Bullet = function () {
     }
   };
 
+  this.preMove = function (delta) {
+    console.log('bullet moving');
+    if (this.visible) {
+      this.time += delta;
+    }
+    if (this.time > 50) {
+      this.die();
+    }
+  };
+
   this.transformedPoints = function (other) {
     return [this.x, this.y];
   };
