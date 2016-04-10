@@ -6,9 +6,6 @@ Game = {
   canvasWidth: 800,
   canvasHeight: 600,
 
-  xScale: 1.0,
-  yScale: 1.0,
-
   sprites: [],
   ship: null,
 
@@ -26,23 +23,6 @@ Game = {
     splosion.visible = true;
     Game.sprites.push(splosion);
   },
-
-  resizeThings: function(width, height){
-    console.log(this.xScale);
-    canvasWidth = width*0.9;
-    canvasHeight = height*0.9;
-
-    this.xScale = canvasWidth/800;
-    this.yScale = canvasWidth/600;
-    console.log(this.xScale);
-
-    var can = document.getElementById("canvas");
-    can.style.width = canvasWidth;
-    can.style.height = canvasHeight;
-
-    console.log("--------------");
-  },
-
   FSM: {
     boot: function () {
       this.state = 'waiting';
