@@ -42,7 +42,7 @@ var Sprite = function () {
     this.move(delta);
     this.updateGrid();
 
-    this.context.save();
+    // this.context.save();
     this.configureTransform();
 
     var canidates = this.findCollisionCanidates();
@@ -50,24 +50,24 @@ var Sprite = function () {
     this.matrix.configure(this.rot, this.scale, this.x, this.y);
     this.checkCollisionsAgainst(canidates);
 
-    this.context.restore();
+    // this.context.restore();
 
     if (this.bridgesH && this.currentNode && this.currentNode.dupe.horizontal) {
       this.x += this.currentNode.dupe.horizontal;
-      this.context.save();
+      // this.context.save();
       this.configureTransform();
       this.checkCollisionsAgainst(canidates);
-      this.context.restore();
+      // this.context.restore();
       if (this.currentNode) {
         this.x -= this.currentNode.dupe.horizontal;
       }
     }
     if (this.bridgesV && this.currentNode && this.currentNode.dupe.vertical) {
       this.y += this.currentNode.dupe.vertical;
-      this.context.save();
+      // this.context.save();
       this.configureTransform();
       this.checkCollisionsAgainst(canidates);
-      this.context.restore();
+      // this.context.restore();
       if (this.currentNode) {
         this.y -= this.currentNode.dupe.vertical;
       }
@@ -78,10 +78,10 @@ var Sprite = function () {
         this.currentNode.dupe.horizontal) {
       this.x += this.currentNode.dupe.horizontal;
       this.y += this.currentNode.dupe.vertical;
-      this.context.save();
+      // this.context.save();
       this.configureTransform();
       this.checkCollisionsAgainst(canidates);
-      this.context.restore();
+      // this.context.restore();
       if (this.currentNode) {
         this.x -= this.currentNode.dupe.horizontal;
         this.y -= this.currentNode.dupe.vertical;
@@ -90,9 +90,10 @@ var Sprite = function () {
   };
   this.move = function (delta) {
     if (!this.visible) return;
+    console.log('moving');
     this.transPoints = null; // clear cached points
 
-    if ($.isFunction(this.preMove)) {
+    if (typeof(this.preMove)==='function') {
       this.preMove(delta);
     }
 
@@ -107,7 +108,7 @@ var Sprite = function () {
       this.rot += 360;
     }
 
-    if ($.isFunction(this.postMove)) {
+    if (typeof(this.postMove)==='function') {
       this.postMove(delta);
     }
   };
@@ -127,23 +128,15 @@ var Sprite = function () {
       newNode.enter(this);
       this.currentNode = newNode;
     }
-
-    if (KEY_STATUS.g && this.currentNode) {
-      this.context.lineWidth = 3.0;
-      this.context.strokeStyle = 'green';
-      this.context.strokeRect(gridx*GRID_SIZE+2, gridy*GRID_SIZE+2, GRID_SIZE-4, GRID_SIZE-4);
-      this.context.strokeStyle = 'black';
-      this.context.lineWidth = 1.0;
-    }
   };
   this.configureTransform = function () {
     if (!this.visible) return;
 
     var rad = (this.rot * Math.PI)/180;
 
-    this.context.translate(this.x, this.y);
-    this.context.rotate(rad);
-    this.context.scale(this.scale, this.scale);
+    // this.context.translate(this.x, this.y);
+    // this.context.rotate(rad);
+    // this.context.scale(this.scale, this.scale);
   };
   this.findCollisionCanidates = function () {
     if (!this.visible || !this.currentNode) return [];
@@ -180,11 +173,11 @@ var Sprite = function () {
       px = trans[i*2];
       py = trans[i*2 + 1];
       // mozilla doesn't take into account transforms with isPointInPath >:-P
-      if (($.browser.mozilla) ? this.pointInPolygon(px, py) : this.context.isPointInPath(px, py)) {
-        other.collision(this);
-        this.collision(other);
-        return;
-      }
+      // if (($.browser.mozilla) ? this.pointInPolygon(px, py) : this.context.isPointInPath(px, py)) {
+      //   other.collision(this);
+      //   this.collision(other);
+      //   return;
+      // }
     }
   };
   this.pointInPolygon = function (x, y) {

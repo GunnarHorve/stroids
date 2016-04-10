@@ -20,6 +20,7 @@ Asteroid = function () {
   this.collidesWith = ["ship", "bullet"];
 
   this.collision = function (other) {
+    console.log('asteroid explodes');
     SFX.explosion();
     if (other.name == "bullet") Game.score += 120 / this.scale;
     this.scale /= 3;

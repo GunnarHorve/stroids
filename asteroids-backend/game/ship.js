@@ -71,6 +71,7 @@ Ship = function () {
   };
 
   this.collision = function (other) {
+    console.log('ship explodes');
     SFX.explosion();
     Game.explosionAt(other.x, other.y);
     Game.FSM.state = 'player_died';
