@@ -29,6 +29,8 @@ Game = {
       }
       roid.vel.rot = Math.random() * 2 - 1;
       Game.sprites.push(roid);
+      var io = require('../bin/www');
+      io.emit('data',[roid.x,roid.y,0],[roid.vel.x,roid.vel.y,roid.vel.rot],[0,0,0],roid.scale,'asteroid');
     }
   },
 
@@ -138,22 +140,6 @@ Game = {
     state: 'boot'
   },
 
-  updateData: function(fn){
-    // console.log('sending data');
-    data=[];
-    for(i = 0;i<Game.sprites.length;i++){
-      if(Game.sprites[i].name = 'asteroid'){
-        x = Game.sprites[i].x;
-        y = Game.sprites[i].y;
-        velX = Game.sprites[i].vel.x;
-        velY = Game.sprites[i].vel.y;
-        rotVel = Game.sprites[i].vel.rot;
-        data.push([x,y,velX,velY,rotVel]);
-      }
-    }
-    fn(data);
-  },
-
   updateShip: function(fn){
     x = Game.ship.x;
     y = Game.ship.y;
@@ -161,7 +147,7 @@ Game = {
     velX = Game.ship.vel.x;
     velY = Game.ship.vel.y;
     rotVel = Game.ship.vel.rot;
-    data= [x,y,rot,velX,velY,rotVel];
+    fn([x,y,rot],[velX,velY,rotVel],[0,0,0],1,'ship');
     console.log('spawning ship');
   }
 
