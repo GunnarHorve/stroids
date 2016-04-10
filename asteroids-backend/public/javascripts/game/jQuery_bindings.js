@@ -200,7 +200,6 @@ var leaderScores = [100, 200, 300, 400, 500];
   }
 
   $(window).keydown(function (e) {
-    switch (KEY_CODES[e.keyCode]) {
       if(chatmode && KEY_CODES[e.keyCode] != 'enter'){
           //talk
           var input = String.fromCharCode(e.keyCode).toLowerCase();
