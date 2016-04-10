@@ -6,8 +6,8 @@ Game = {
   canvasWidth: 800,
   canvasHeight: 600,
 
-  xScale: 1,
-  yScale: 1,
+  xScale: 1.0,
+  yScale: 1.0,
 
   sprites: [],
   ship: null,
@@ -28,13 +28,13 @@ Game = {
   },
 
   resizeThings: function(width, height){
-    //console.log(canvasWidth + " : " + canvasHeight);
+    console.log(this.xScale);
     canvasWidth = width*0.9;
     canvasHeight = height*0.9;
 
-    //console.log(canvasWidth + " : " + canvasHeight);
-    xScale = canvasWidth/800;
-    yScale = canvasWidth/600;
+    this.xScale = canvasWidth/800;
+    this.yScale = canvasWidth/600;
+    console.log(this.xScale);
 
     var can = document.getElementById("canvas");
     can.style.width = canvasWidth;
