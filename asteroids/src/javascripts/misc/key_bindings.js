@@ -1,7 +1,8 @@
 $(window).keydown(function (e) {
 
-  if(KEY_CODES[e.keyCode] == 't' || KEY_CODES[e.keyCode] == '/'){
+  if(!Game.chatmode &&(KEY_CODES[e.keyCode] == 't' || KEY_CODES[e.keyCode] == '/')){
     Game.chatmode = true;
+    console.log("hi");
     return;
   }
   if(Game.chatmode) {
