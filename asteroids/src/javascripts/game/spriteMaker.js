@@ -25,6 +25,9 @@ socket.on('data',function(pos,vel,acc,scale,type) {
   console.log(toAdd.x+'  '+toAdd.y);
   Game.sprites.push(toAdd);
   if(Game.ship ==null && toAdd.name == 'ship'){
+    if(Game.sprites.length > 1){
+      Game.start = false;
+    }
     Game.ship = toAdd;
     console.log('I have a ship: '+Game.ship.id);
   }
