@@ -12,7 +12,6 @@ KEY_CODES = {
   13: 'enter',
   84: 't',
   191: '/',
-
 }
 
 KEY_STATUS = { keyDown:false };
@@ -33,6 +32,8 @@ $(window).keydown(function (e) {
     KEY_STATUS[KEY_CODES[e.keyCode]] = false;
   }
 });
+
+
 
 GRID_SIZE = 60;
 

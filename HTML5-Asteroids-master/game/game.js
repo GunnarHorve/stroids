@@ -1,3 +1,74 @@
+spawn = function(pos,vel,scale,type) {
+  var toAdd;
+  if(type === 'asteroid') {
+    toAdd = new Asteroid();
+  } else if (type === 'ship') {
+    toAdd = new Ship();
+  } else if (type === 'bullet') {
+    toAdd = new Bullet()
+  } else if (type === 'explosion'){
+    toAdd = new Explosion();
+  }
+  toAdd.x = pos[0]; toAdd.y = pos[1]; toAdd.rot = pos[2];
+  toAdd.vel.x = vel[0]; toAdd.vel.y = vel[1]; toAdd.vel.rot = vel[2];
+  toAdd.scale = scale;
+  toAdd.visible = true;
+  Game.sprites.push(toAdd);
+}
+
+despawn = function(index) {
+  Game.sprites[index].die();
+}
+
+$(window).keydown(function (e) {
+  var toSend = 0; //space bar
+  if((KEY_STATUS.up && KEYSTATUS.down) || (KEY_STATUS.left && KEY_STATUS.right)) {
+    return;
+  } else if(KEY_STATUS.right) {
+    toSend = 1;
+  } else if(KEY_STATUS.right && KEY_STATUS.up) {
+    toSend = 2;
+  } else if(KEY_STATUS.up) {
+    toSend = 3;
+  } else if(KEY_STATUS.left && KEY_STATUS.up) {
+    toSend = 4;
+  } else if(KEY_STATUS.left) {
+    toSend = 5;
+  } else if(KEY_STATUS.left && KEY_STATUS.down) {
+    toSend = 6;
+  } else if(KEY_STATUS.down) {
+    toSend = 7;
+  } else if(KEY_STATUS.right && KEY_STATUS.down) {
+    toSend = 8;
+  }
+
+}).keyup(function (e) {
+  var toSend = 0;
+  if((KEY_STATUS.up && KEYSTATUS.down) || (KEY_STATUS.left && KEY_STATUS.right)) {
+    return;
+  } else if(KEY_STATUS.right) {
+    toSend = 1;
+  } else if(KEY_STATUS.right && KEY_STATUS.up) {
+    toSend = 2;
+  } else if(KEY_STATUS.up) {
+    toSend = 3;
+  } else if(KEY_STATUS.left && KEY_STATUS.up) {
+    toSend = 4;
+  } else if(KEY_STATUS.left) {
+    toSend = 5;
+  } else if(KEY_STATUS.left && KEY_STATUS.down) {
+    toSend = 6;
+  } else if(KEY_STATUS.down) {
+    toSend = 7;
+  } else if(KEY_STATUS.right && KEY_STATUS.down) {
+    toSend = 8;
+  } else if(KEY_STATUS.space) {
+    return;
+  }
+});
+
+
+
 Game = {
   score: 0,
   totalAsteroids: 5,
@@ -77,6 +148,7 @@ Game = {
         Game.ship.visible = true;
         this.state = 'run';
       }
+
     },
     run: function () {
       for (var i = 0; i < Game.sprites.length; i++) {

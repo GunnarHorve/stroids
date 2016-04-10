@@ -202,16 +202,12 @@ $(function () {
       case 't':
         if(!chatmode){
           chatmode = true;
-          ship.chatting = true;
-          Game.isChatting = true;
           break;
         }
         break;
       case '/':
         if(!chatmode){
           chatmode = true;
-          ship.chatting = true;
-          Game.isChatting = true;
           break;
         }
       break;
@@ -220,8 +216,6 @@ $(function () {
         break;
       }
       chatmode = false;
-      ship.chatting = false;
-      Game.isChatting = false;
       console.log(currentMessage);
       addChatToScreen(currentMessage);
       currentMessage = "";
