@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('asteroids:server');
 var http = require('http');
-var Game = require('../game/Game');
+var Game = require('../game/Game')();
 var Ship = require('../game/Ship');
 var Bullet = require('../game/Bullet');
 var Sprite = require('../game/Sprite');
@@ -82,6 +82,7 @@ console.log(Game.id);
 // ship.sprites.push(ship);
 
 Game.ship = ship;
+ship.visible = true;
 Game.sprites.push(ship);
 
 var io = require('socket.io')(server);
@@ -97,10 +98,10 @@ io.on('connection',function(socket){
 
   socket.on('turn',function(status){
     if(status[0]){
-      Game.ship.vel.rot -=6;
+      ship.vel.rot -=6;
     }
     if(status[1]){
-      Game.ship.vel.rot +=6;
+    ship.vel.rot +=6;
     }
   })
 
@@ -121,8 +122,14 @@ io.on('connection',function(socket){
   })
 
   socket.on('move',function(acc){
-    Game.ship.acc.x = acc[0];
-    Game.ship.acc.y = acc[1];
+    console.log('trying to move');
+    // var Game = require('../game/Game')();
+    ship.acc.x = acc[0];
+    ship.acc.y = acc[1];
+    socket.emit('update',[ship.x,ship.y,ship.rot],
+    [ship.vel.x,ship.vel.y,ship.vel.rot],
+    [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
+    // console.log(ship.x+' '+ship.y);
   })
 
   // var updates =setInterval(function(){
@@ -142,6 +149,7 @@ var thisFrame;
 var elapsed;
 var delta;
 var loop = setInterval(function(){
+  var Game = require('../game/Game')();
   thisFrame = Date.now();
   elapsed = thisFrame - lastFrame;
   lastFrame = thisFrame;
@@ -150,7 +158,9 @@ var loop = setInterval(function(){
 
   for (i = 0; i < Game.sprites.length; i++) {
 
-    Game.sprites[i].visible = true;
+    // if(Game.sprites[i].name == 'ship'){
+    //   console.log(Game.sprites[i].x+'  '+Game.sprites[i].y);
+    // }
     Game.sprites[i].run(delta);
 
     if (Game.sprites[i].reap) {

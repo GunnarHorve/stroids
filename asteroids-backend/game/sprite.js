@@ -109,6 +109,9 @@ var Sprite = function () {
     this.x += this.vel.x * delta;
     this.y += this.vel.y * delta;
     this.rot += this.vel.rot * delta;
+    if(this.name == 'ship'){
+      console.log(this.x+'  '+this.y);
+    }
     if (this.rot > 360) {
       this.rot -= 360;
     } else if (this.rot < 0) {

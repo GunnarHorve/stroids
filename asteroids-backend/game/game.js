@@ -155,4 +155,6 @@ Game = {
 
 };
 
-module.exports = Game;
+module.exports = function(){
+  return Game;
+};

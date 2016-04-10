@@ -48,14 +48,6 @@ $(function () {
   Sprite.prototype.grid    = grid;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
-  var ship = new Ship();
-
-  ship.x = Game.canvasWidth / 2;
-  ship.y = Game.canvasHeight / 2;
-
-  sprites.push(ship);
-  Game.ship = ship;
-
   var i, j = 0;
 
   var lastFrame = Date.now();
