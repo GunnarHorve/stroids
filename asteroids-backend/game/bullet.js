@@ -1,4 +1,4 @@
-var Sprite = require('./Sprite');
+var Sprite = require('./sprite');
 
 Bullet = function () {
   this.init("bullet", [0, 0]);

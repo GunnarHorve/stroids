@@ -130,15 +130,19 @@ $(function () {
   }
 
     //display markers
-    // context.beginPath();
-    // ctx.moveTo(0,0);
-    // ctx.lineTo(30, 30);
-    // ctx.stroke();
-    // ctx.moveTo(2400, 0);
-    // ctx.lineTo(2370, 30);
-    // ctx.stroke();
-    // ctx.moveTo(0, 1800);
-    // ctx.lineTo()
+    context.beginPath();
+    context.moveTo(0,0);//top left
+    context.lineTo(30, 30);
+    context.stroke();
+    context.moveTo(2400, 0);//top right
+    context.lineTo(2370, 30);
+    context.stroke();
+    context.moveTo(0, 1800);//bottom left
+    context.lineTo(30, 1770);
+    context.stroke();
+    context.moveTo(2400, 1800);//bottom right
+    context.lineTo(2370, 1770);
+    context.stroke();
 
     // display score
     var score_text = ''+ Game.score;

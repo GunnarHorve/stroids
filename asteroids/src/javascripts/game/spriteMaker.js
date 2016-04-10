@@ -1,5 +1,22 @@
-var socket = io.connect('http://localhost:3000');
 
+
+function extractDomain(url) {
+    var domain;
+    //find & remove protocol (http, ftp, etc.) and get domain
+    if (url.indexOf("://") > -1) {
+        domain = url.split('/')[2];
+    }
+    else {
+        domain = url.split('/')[0];
+    }
+
+    //find & remove port number
+    domain = domain.split(':')[0];
+
+    return domain;
+}
+
+var socket = io.connect(extractDomain(window.location.href)+":3000");
 var leaderNames = ['bob1','bob2','bob3','bob4','bob5'];
 var leaderScores = [100,200,300,400,500];
 
