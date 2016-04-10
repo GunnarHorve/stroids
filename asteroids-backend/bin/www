@@ -7,10 +7,10 @@
 var app = require('../app');
 var debug = require('debug')('asteroids:server');
 var http = require('http');
-var Game = require('../game/Game')();
-var Ship = require('../game/Ship');
-var Bullet = require('../game/Bullet');
-var Sprite = require('../game/Sprite');
+var Game = require('../game/game')();
+var Ship = require('../game/ship');
+var Bullet = require('../game/bullet');
+var Sprite = require('../game/sprite');
 var h = require('../game/helpers');
 
 GRID_SIZE = h[0];
@@ -187,7 +187,7 @@ io.on('connection',function(socket){
 });
 
 var findShip = function(id){
-  var Game = require('../game/Game')();
+  var Game = require('../game/game')();
   for(i = 0;i<Game.sprites.length;i++){
     if(Game.sprites[i].id == id && Game.sprites[i].name == 'ship'){
       return Game.sprites[i];
@@ -201,7 +201,7 @@ var thisFrame;
 var elapsed;
 var delta;
 var loop = setInterval(function(){
-  var Game = require('../game/Game')();
+  var Game = require('../game/game')();
   thisFrame = Date.now();
   elapsed = thisFrame - lastFrame;
   lastFrame = thisFrame;

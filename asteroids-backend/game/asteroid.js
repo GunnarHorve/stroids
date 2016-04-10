@@ -1,4 +1,4 @@
-var Sprite = require('./Sprite');
+var Sprite = require('./sprite');
 
 Asteroid = function () {
   this.init("asteroid",
@@ -27,7 +27,7 @@ Asteroid = function () {
   this.collision = function (other) {
     console.log('asteroid explodes');
     // SFX.explosion();
-    var Game = require('../game/Game')();
+    var Game = require('../game/game')();
     var io = require('../bin/www');
     if (other.name == "bullet") {
       for(i=0;i<Game.sprites.length;i++){
