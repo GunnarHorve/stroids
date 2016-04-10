@@ -19,20 +19,6 @@ for (code in KEY_CODES) {
   KEY_STATUS[KEY_CODES[code]] = false;
 }
 
-$(window).keydown(function (e) {
-  KEY_STATUS.keyDown = true;
-  if (KEY_CODES[e.keyCode]) {
-    e.preventDefault();
-    KEY_STATUS[KEY_CODES[e.keyCode]] = true;
-  }
-}).keyup(function (e) {
-  KEY_STATUS.keyDown = false;
-  if (KEY_CODES[e.keyCode]) {
-    e.preventDefault();
-    KEY_STATUS[KEY_CODES[e.keyCode]] = false;
-  }
-});
-
 GRID_SIZE = 60;
 
 Matrix = function (rows, columns) {

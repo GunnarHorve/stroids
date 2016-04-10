@@ -22,10 +22,19 @@ socket.on('data',function(pos,vel,acc,scale,type) {
 
 
 despawn = function(index) { //please call this for ALL despawns, including bullets & explosions
-  sprites[index].die();
+  if(Game.sprites[index].name === "ship" || Game.sprites[index].name === "asteroid"){
+    var boomSound = document.getElementById("kaboomSound");
+    boomSound.load();
+    boomSound.play();
+  }
+  Game.sprites[index].die();
 }
 
 $(window).keydown(function (e) {
+  if(KEY_STATUS[KEY_CODES[e.keyCode]]) {
+    return;
+  }
+
   if(KEY_CODES[e.keyCode]==='up') { //please sync ship && turn on burner
     var rad = ((Game.ship.rot-90) * Math.PI)/180;
     Game.ship.children.exhaust.visible = true;
@@ -34,7 +43,13 @@ $(window).keydown(function (e) {
     socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
   } else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
     socket.emit('bullet fire');
+    var laserSound = document.getElementById("pewPewSound");
+    laserSound.load();
+    laserSound.play();
   }
+
+  KEY_STATUS[KEY_CODES[e.keyCode]] = true
+
 }).keyup(function (e) {
     if(KEY_CODES[e.keyCode]==='up'){
       Game.ship.children.exhaust.visible = false;
@@ -42,5 +57,8 @@ $(window).keydown(function (e) {
     } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') {
       socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
     }
+
+    KEY_STATUS[KEY_CODES[e.keyCode]] = false;
+
   }
 );
