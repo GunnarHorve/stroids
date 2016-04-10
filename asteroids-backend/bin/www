@@ -80,6 +80,7 @@ ship.y = Game.canvasHeight / 2;
 // ship.sprites.push(ship);
 
 Game.ship = ship;
+Game.sprites.push(ship);
 
 var io = require('socket.io')(server);
 
@@ -133,6 +134,7 @@ var loop = setInterval(function(){
   elapsed = thisFrame - lastFrame;
   lastFrame = thisFrame;
   delta = elapsed / 30;
+  // console.log('ship at: '+ship.x+'  '+ship.y);
 
   for (i = 0; i < sprites.length; i++) {
 

@@ -96,6 +96,12 @@ var Sprite = function () {
     if (typeof(this.preMove)==='function') {
       this.preMove(delta);
     }
+    if(this.name == 'asteroid'){
+      console.log('astroid at: '+this.x+'  '+this.y);
+    }
+    if(this.name=='ship'){
+      console.log('ship at: '+this.x+'  '+this.y);
+    }
 
     this.vel.x += this.acc.x * delta;
     this.vel.y += this.acc.y * delta;
@@ -167,16 +173,7 @@ var Sprite = function () {
   this.checkCollision = function (other) {
     if (!other.visible ||
          this == other ||
-         this.collidesWith.indexOf(other.name) == -1) {
-           if(!other.visible){
-             console.log('invisible canidate?');
-           }else if(this == other){
-             console.log('same canidate?');
-           }else{
-             console.log('cant colide with?');
-           }
-           return;
-         };
+         this.collidesWith.indexOf(other.name) == -1) {return;};
     console.log('checking single collision');
     var trans = other.transformedPoints();
     var px, py;
