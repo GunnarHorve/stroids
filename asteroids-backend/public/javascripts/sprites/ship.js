@@ -11,6 +11,7 @@ Ship = function () {
                                3,  6]);
 
   this.bulletCounter = 0;
+  this.id;
 
   this.postMove = this.wrapPostMove;
 

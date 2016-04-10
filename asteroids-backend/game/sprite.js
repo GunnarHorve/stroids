@@ -23,6 +23,7 @@ var Sprite = function () {
   this.reap     = false;
   this.bridgesH = true;
   this.bridgesV = true;
+  this.id= 0;
 
   this.collidesWith = [];
 
@@ -96,12 +97,12 @@ var Sprite = function () {
     if (typeof(this.preMove)==='function') {
       this.preMove(delta);
     }
-    if(this.name == 'asteroid'){
-      console.log('astroid at: '+this.x+'  '+this.y);
-    }
-    if(this.name=='ship'){
-      console.log('ship at: '+this.x+'  '+this.y);
-    }
+    // if(this.name == 'asteroid'){
+    //   console.log('astroid at: '+this.x+'  '+this.y);
+    // }
+    // if(this.name=='ship'){
+    //   console.log('ship at: '+this.x+'  '+this.y);
+    // }
 
     this.vel.x += this.acc.x * delta;
     this.vel.y += this.acc.y * delta;

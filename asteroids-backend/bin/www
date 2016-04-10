@@ -136,14 +136,14 @@ var loop = setInterval(function(){
   delta = elapsed / 30;
   // console.log('ship at: '+ship.x+'  '+ship.y);
 
-  for (i = 0; i < sprites.length; i++) {
+  for (i = 0; i < Game.sprites.length; i++) {
 
-    sprites[i].visible = true;
-    sprites[i].run(delta);
+    Game.sprites[i].visible = true;
+    Game.sprites[i].run(delta);
 
-    if (sprites[i].reap) {
-      sprites[i].reap = false;
-      sprites.splice(i, 1);
+    if (Game.sprites[i].reap) {
+      Game.sprites[i].reap = false;
+      Game.sprites.splice(i, 1);
       i--;
     }
   }
