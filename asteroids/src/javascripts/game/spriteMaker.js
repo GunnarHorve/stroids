@@ -23,8 +23,37 @@ socket.on('data',function(pos,vel,acc,scale,type) {
   Game.sprites.push(toAdd);
   if(Game.ship ==null && toAdd.name == 'ship'){
     Game.ship = toAdd;
-    console.log('I have a ship');
+    console.log('I have a ship: '+Game.ship.id);
   }
+});
+
+socket.on('new_data',function(pos,vel,acc,id,scale,type){
+  if(!Game.start){
+    console.log('done getting new data');
+    return;
+  }
+
+  if(type == 'end'){
+    Game.start = false;
+    return;
+  }
+  var toAdd;
+  if(type === 'asteroid') {
+    toAdd = new Asteroid();
+  } else if (type === 'ship') {
+    toAdd = new Ship();
+  } else if (type === 'bullet') {
+    toAdd = new Bullet();
+  } else if (type === 'explosion'){
+    toAdd = new Explosion();
+  }
+  toAdd.x = pos[0]; toAdd.y = pos[1]; toAdd.rot = pos[2];
+  toAdd.vel.x = vel[0]; toAdd.vel.y = vel[1]; toAdd.vel.rot = vel[2];
+  toAdd.scale = scale;
+  toAdd.visible = true;
+  toAdd.id = id; //id if ship (shhhhhhhhhhhh)
+  toAdd.acc.x = acc[0]; toAdd.acc.y = acc[1];toAdd.vel.rot = vel[2];
+  Game.sprites.push(toAdd);
 });
 
 socket.on('update',function(pos,vel,acc,scale,type){
@@ -50,7 +79,7 @@ socket.on('update',function(pos,vel,acc,scale,type){
 
 socket.on('new_score',function(id,score){
   console.log('new score is: '+score)
-  checkHighScore('new guy',10000);
+  checkHighScore(id,score);
 })
 
 //leaderboard work top 5
@@ -109,7 +138,7 @@ var leaderScores = [100, 200, 300, 400, 500];
   }
 
 socket.on('despawn', function(index) { //please call this for ALL despawns, including bullets & explosions
-  var thing;
+  var thing=null;
   // console.log('despawning');
   for(i=0;i<Game.sprites.length;i++){
     if(Game.sprites[i].id == index){
@@ -117,6 +146,7 @@ socket.on('despawn', function(index) { //please call this for ALL despawns, incl
     }
   }
   // console.log(thing.name+'  '+thing.id);
+  if(thing==null){return;}
 
   if(thing.name === "ship" || thing.name === "asteroid"){
     var boomSound = document.getElementById("kaboomSound");
@@ -124,6 +154,10 @@ socket.on('despawn', function(index) { //please call this for ALL despawns, incl
     boomSound.play();
 }
   thing.die();
+  if(thing.id == Game.ship.id){
+    // Game.FSM.state = waiting;
+    Game.FSM.boot();
+  }
 });
 
 $(window).keydown(function (e) {
@@ -135,16 +169,18 @@ $(window).keydown(function (e) {
     var rad = ((Game.ship.rot-90) * Math.PI)/180;
     Game.ship.children.exhaust.visible = true;
     console.log('trying to move');
-    socket.emit('move',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)]);
+    socket.emit('move',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)],Game.ship.id);
   }else if(KEY_CODES[e.keyCode]==='left') { //please sync ship
-    socket.emit('turn',[true,false]);
+    socket.emit('turn',[true,false],Game.ship.id);
   }else if(KEY_CODES[e.keyCode]==='right'){
-    socket.emit('turn',[false,true]);
+    socket.emit('turn',[false,true],Game.ship.id);
   }else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
-    socket.emit('bullet fire');
+    if(Game.ship !=null){
+    socket.emit('bullet fire',Game.ship.id);
     var laserSound = document.getElementById("pewPewSound");
     laserSound.load();
     laserSound.play();
+  }
   }
 
   KEY_STATUS[KEY_CODES[e.keyCode]] = true
@@ -152,10 +188,9 @@ $(window).keydown(function (e) {
 }).keyup(function (e) {
     if(KEY_CODES[e.keyCode]==='up'){
       Game.ship.children.exhaust.visible = false;
-      socket.emit('move',[0,0]);
+      socket.emit('move',[0,0],Game.ship.id);
     } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') {
-      console.log(KEY_STATUS.left+'  '+KEY_STATUS.right);
-      socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
+      socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right],Game.ship.id);
     }
 
     KEY_STATUS[KEY_CODES[e.keyCode]] = false;

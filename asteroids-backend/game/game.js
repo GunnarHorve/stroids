@@ -64,13 +64,10 @@ Game = {
           Game.sprites[i].visible = false;
         }
       }
-
-      Game.score = 0;
-      Game.lives = 2;
-      Game.totalAsteroids = 2;
+      Game.totalAsteroids = 5;
       Game.spawnAsteroids();
 
-      this.state = 'spawn_ship';
+      this.state = 'run';
     },
     spawn_ship: function () {
       console.log('spawning ship');

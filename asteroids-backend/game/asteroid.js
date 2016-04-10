@@ -32,9 +32,9 @@ Asteroid = function () {
     if (other.name == "bullet") {
       for(i=0;i<Game.sprites.length;i++){
         if(other.id == Game.sprites[i].id && Game.sprites[i].name == 'ship'){
-          Game.sprites[i].score += 1200 / this.scale;
+          Game.sprites[i].score += 120 / this.scale;
           console.log(Game.sprites[i].score);
-          io.emit('new_score',Game.sprites[i].id,Game.sprites[i].score);
+          io.emit('new_score',Game.sprites[i].playerName,Game.sprites[i].score);
           break;
         }
       }

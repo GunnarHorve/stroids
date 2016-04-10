@@ -15,6 +15,7 @@ Ship = function () {
   this.bulletCounter = 0;
   this.id;
   this.score=0;
+  this.playerName = "idiot";
 
   this.postMove = this.wrapPostMove;
 

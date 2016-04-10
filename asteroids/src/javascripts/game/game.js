@@ -8,6 +8,7 @@ Game = {
 
   sprites: [],
   ship: null,
+  start: true,
 
   playerName: "",
 
@@ -27,6 +28,7 @@ Game = {
   },
   FSM: {
     boot: function () {
+      Game.ship = null;
       this.state = 'waiting';
     },
     waiting: function () {
@@ -39,14 +41,14 @@ Game = {
     },
     start: function () {
       socket.emit('start');
-      socket.emit('player_join');
+      socket.emit('player_join','test');
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
-      // if (Game.ship.isClear()) {
-        // Game.ship.visible = true;
+      if (Game.ship != null) {
+        Game.ship.visible = true;
         this.state = 'run';
-      // }
+      }
     },
     run: function () {
       for (var i = 0; i < Game.sprites.length; i++) {
