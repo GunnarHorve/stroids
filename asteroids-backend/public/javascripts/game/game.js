@@ -9,6 +9,13 @@ Game = {
   sprites: [],
   ship: null,
 
+  //message work
+  chatmode: false,
+  currentMessage: "",
+  messages: ["h", "i", "t", "h", "e", "r", "e", "!"],
+  messageTimer: [600, 500, 490, 300, 220, 210, 100, 10],
+  //message work end
+
   explosionAt: function (x, y) {
     var splosion = new Explosion();
     splosion.x = x;
