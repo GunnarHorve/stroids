@@ -35,6 +35,7 @@ Asteroid = function () {
           Game.sprites[i].score += 120 / this.scale;
           console.log(Game.sprites[i].score);
           io.emit('new_score',Game.sprites[i].playerName,Game.sprites[i].score);
+          Game.checkHighScore(Game.sprites[i].name,Game.sprites[i].score);
           break;
         }
       }

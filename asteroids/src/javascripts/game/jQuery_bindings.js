@@ -117,11 +117,13 @@ $(function () {
     //chat
 
     //leaderboard
+    if(leaderNames != null){
     for(var i = 0; i < leaderNames.length; i++){
       textY = 20 + 20*(4-i);
       var boardRow = (5-i) + ": " + leaderNames[i] + " " + leaderScores[i];
       context.fillText(boardRow, Game.canvasWidth-8*boardRow.length, textY);
     }
+  }
 
     // display score
     var score_text = ''+ Game.score;

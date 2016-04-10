@@ -78,13 +78,16 @@ Sprite.prototype.matrix  = new Matrix(2, 3);
 
 var io = require('socket.io')(server);
 var updater = null;
+var once = true;
 
 io.on('connection',function(socket){
   module.exports = io;
-  if(updater == null){
+  if(once){
     Game.FSM.start();
+    once = false;
   }
   console.log('recieved connection');
+  socket.emit('scores',Game.leaderNames,Game.leaderScores);
 
 
   socket.on('bullet fire',function(id){

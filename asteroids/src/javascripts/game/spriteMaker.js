@@ -1,5 +1,8 @@
 var socket = io.connect('http://localhost:3000');
 
+var leaderNames = ['bob1','bob2','bob3','bob4','bob5'];
+var leaderScores = [100,200,300,400,500];
+
 socket.on('data',function(pos,vel,acc,scale,type) {
   var toAdd;
   if(type === 'asteroid') {
@@ -82,12 +85,18 @@ socket.on('new_score',function(id,score){
   checkHighScore(id,score);
 })
 
+socket.on('scores',function(names, scores){
+  leaderNames = names;
+  leaderScores =scores
+})
+
 //leaderboard work top 5
-var leaderNames = ["bob1", "bob2", "bob3", "bob4", "bob5"];
-var leaderScores = [100, 200, 300, 400, 500];
 //checks the given score against the lowest score and adds to list if need be
 
   var checkHighScore = function(name, score){
+    if(name == Game.playerName){
+      Game.score = score;
+    }
     var lowestHigh = leaderScores[0];//scores are 0-4 lowest to highest
     if (score > lowestHigh){
       if(alreadyOnBoard(name, score)){
@@ -189,8 +198,10 @@ $(window).keydown(function (e) {
     if(KEY_CODES[e.keyCode]==='up'){
       Game.ship.children.exhaust.visible = false;
       socket.emit('move',[0,0],Game.ship.id);
-    } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') {
-      socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right],Game.ship.id);
+    } else if(KEY_CODES[e.keyCode]==='left'){
+      socket.emit('turn',[false,KEY_STATUS.right],Game.ship.id);
+    }else if(KEY_CODES[e.keyCode]==='right'){
+      socket.emit('turn',[KEY_STATUS.left,false],Game.ship.id);
     }
 
     KEY_STATUS[KEY_CODES[e.keyCode]] = false;

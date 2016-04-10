@@ -41,7 +41,7 @@ Game = {
     },
     start: function () {
       socket.emit('start');
-      socket.emit('player_join','test');
+      socket.emit('player_join',Game.playerName);
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
