@@ -6,6 +6,7 @@ socket.on('data',function(pos,vel,acc,scale,type) {
     toAdd = new Asteroid();
     toAdd.id = acc[0]; //no tears only dreams now
     toAdd.scale = scale;
+    console.log('making asteroid');
   } else if (type === 'ship') {
     toAdd = new Ship();
     toAdd.id = scale; //id if ship (shhhhhhhhhhhh)
@@ -18,7 +19,7 @@ socket.on('data',function(pos,vel,acc,scale,type) {
   toAdd.x = pos[0]; toAdd.y = pos[1]; toAdd.rot = pos[2];
   toAdd.vel.x = vel[0]; toAdd.vel.y = vel[1]; toAdd.vel.rot = vel[2];
   toAdd.visible = true;
-  console.log(toAdd.id);
+  console.log(toAdd.x+'  '+toAdd.y);
   Game.sprites.push(toAdd);
   if(Game.ship ==null && toAdd.name == 'ship'){
     Game.ship = toAdd;
@@ -36,7 +37,7 @@ socket.on('update',function(pos,vel,acc,scale,type){
   }
 
   var thing;
-  console.log('updating');
+  // console.log('updating');
   for(i=0;i<Game.sprites.length;i++){
     if(Game.sprites[i].id == id){
       thing = Game.sprites[i];
@@ -49,13 +50,13 @@ socket.on('update',function(pos,vel,acc,scale,type){
 
 socket.on('despawn', function(index) { //please call this for ALL despawns, including bullets & explosions
   var thing;
-  console.log('despawning');
+  // console.log('despawning');
   for(i=0;i<Game.sprites.length;i++){
     if(Game.sprites[i].id == index){
       thing = Game.sprites[i];
     }
   }
-  console.log(thing.name+'  '+thing.id);
+  // console.log(thing.name+'  '+thing.id);
 
   if(thing.name === "ship" || thing.name === "asteroid"){
     var boomSound = document.getElementById("kaboomSound");

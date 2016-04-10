@@ -14,6 +14,5 @@ Asteroid = function () {
   this.visible = true;
   this.scale = 6;
   this.postMove = this.wrapPostMove;
-
 };
 Asteroid.prototype = new Sprite();

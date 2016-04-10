@@ -3,6 +3,7 @@ var Sprite = function () {
     GRID_SIZE = 60;
     this.name     = name;
     this.points   = points;
+    this.time = 99;
 
     this.vel = {
       x:   0,
@@ -222,6 +223,7 @@ var Sprite = function () {
   this.collision = function () {
   };
   this.die = function () {
+    if(this.time <= 20){return;}
     console.log('killing thing');
     this.visible = false;
     this.reap = true;
