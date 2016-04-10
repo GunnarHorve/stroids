@@ -59,7 +59,7 @@ Game = {
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
-      if (Game.ship != null) {
+      if (Game.ship !== null) {
         Game.ship.visible = true;
         this.state = 'run';
       }
@@ -76,7 +76,7 @@ Game = {
    },
    getName: function(){
      var tempName = prompt("Please enter a name", "John Wick");
-     if(tempName == null){
+     if(tempName === null){
        Game.playerName = "Idiot #" + Math.random() * 100000;
      }else{
        Game.playerName = tempName;

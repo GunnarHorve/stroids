@@ -46,9 +46,9 @@ for (var i = 0; i < gridWidth; i++) {
 for (var i = 0; i < gridWidth; i++) {
   for (var j = 0; j < gridHeight; j++) {
     var node   = grid[i][j];
-    node.north = grid[i][(j == 0) ? gridHeight-1 : j-1];
+    node.north = grid[i][(j === 0) ? gridHeight-1 : j-1];
     node.south = grid[i][(j == gridHeight-1) ? 0 : j+1];
-    node.west  = grid[(i == 0) ? gridWidth-1 : i-1][j];
+    node.west  = grid[(i === 0) ? gridWidth-1 : i-1][j];
     node.east  = grid[(i == gridWidth-1) ? 0 : i+1][j];
   }
 }
@@ -90,7 +90,7 @@ io.on('connection',function(socket){
 
   socket.on('bullet fire',function(id){
     var ship = findShip(id);
-    if(ship == null){return;}
+    if(ship === null){return;}
     var rad = ((ship.rot-90) * Math.PI)/180;
     var vectorx = Math.cos(rad);
     var vectory = Math.sin(rad);
@@ -99,7 +99,7 @@ io.on('connection',function(socket){
     y = ship.y + vectory * 10+ship.vel.y/delta;
     velx = 6 * vectorx + ship.vel.x;
     vely = 6 * vectory + ship.vel.y;
-    socket.emit('data',[x,y,ship.rot],[velx,vely,0],[0,0,0],0,'bullet')
+    socket.emit('data',[x,y,ship.rot],[velx,vely,0],[0,0,0],0,'bullet');
     toAdd = new Bullet();
     toAdd.x =  x;
     toAdd.y = y;
@@ -112,11 +112,11 @@ io.on('connection',function(socket){
     Game.sprites.push(toAdd);
 
     // console.log('Somebody is firing the lasers!');
-  })
+  });
 
   socket.on('turn',function(status,id){
     var ship = findShip(id);
-    if(ship == null){return;}
+    if(ship === null){return;}
 
     if(status[0]){
       ship.vel.rot =-6;
@@ -128,11 +128,11 @@ io.on('connection',function(socket){
     socket.emit('update',[ship.x,ship.y,ship.rot],
     [ship.vel.x,ship.vel.y,ship.vel.rot],
     [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
-  })
+  });
 
   socket.on('start',function(){
     console.log('starting game');
-  })
+  });
 
   socket.on('player_join',function(name){
     var ship = new Ship();
@@ -155,7 +155,7 @@ io.on('connection',function(socket){
     }
     socket.emit('new_data',[0,0,0],[0,0,0],[0,0,0],0,0,'end');
     Game.sprites.push(ship);
-    if(updater == null){
+    if(updater === null){
       updater = setInterval(function(){
         for(i=0;i<Game.sprites.length;i++){
           if(Game.sprites[i].name != 'ship'){continue;}
@@ -166,11 +166,11 @@ io.on('connection',function(socket){
         }
       },100);
     }
-  })
+  });
 
   socket.on('move',function(acc,id){
     var ship = findShip(id);
-    if(ship == null){return;}
+    if(ship === null){return;}
     console.log('trying to move');
     // var Game = require('../game/Game')();
     ship.acc.x = acc[0];
@@ -179,11 +179,11 @@ io.on('connection',function(socket){
     [ship.vel.x,ship.vel.y,ship.vel.rot],
     [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
     console.log(ship.x+' '+ship.y);
-  })
+  });
 
   socket.on('chat',function(name,msg){
     socket.emit('chat',name,msg);
-  })
+  });
 });
 
 var findShip = function(id){
@@ -194,7 +194,7 @@ var findShip = function(id){
     }
   }
   return null;
-}
+};
 
 var lastFrame = Date.now();
 var thisFrame;

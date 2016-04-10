@@ -66,7 +66,7 @@ Game = {
           Game.sprites[i].visible = false;
         }
       }
-      Game.totalAsteroids = 5;
+      Game.totalAsteroids = 10;
       Game.spawnAsteroids();
 
       this.state = 'run';
@@ -75,7 +75,7 @@ Game = {
       console.log('spawning ship');
       Game.ship.x = 400;//Game.canvasWidth / 2;
       Game.ship.y = 300;//Game.canvasHeight / 2;
-      console.log(Game.id)
+      // console.log(Game.id)
       if (Game.ship.isClear()) {
         Game.ship.rot = 0;
         Game.ship.vel.x = 0;
@@ -95,7 +95,7 @@ Game = {
       }
     },
     new_level: function () {
-      if (this.timer == null) {
+      if (this.timer === null) {
         this.timer = Date.now();
       }
       // wait a second before spawning more asteroids
@@ -111,7 +111,7 @@ Game = {
       if (Game.lives < 0) {
         this.state = 'end_game';
       } else {
-        if (this.timer == null) {
+        if (this.timer === null) {
           this.timer = Date.now();
         }
         // wait a second before spawning
@@ -123,7 +123,7 @@ Game = {
     },
     end_game: function () {
       Text.renderText('GAME OVER', 50, Game.canvasWidth/2 - 160, Game.canvasHeight/2 + 10);
-      if (this.timer == null) {
+      if (this.timer === null) {
         this.timer = Date.now();
       }
       // wait 5 seconds then go back to waiting state

@@ -22,7 +22,7 @@ Asteroid = function () {
 
   this.preMove = function(delta){
   this.time+=delta;
-}
+};
 
   this.collision = function (other) {
     console.log('asteroid explodes');
@@ -30,10 +30,10 @@ Asteroid = function () {
     var Game = require('../game/Game')();
     var io = require('../bin/www');
     if (other.name == "bullet") {
-      for(i=0;i<Game.sprites.length;i++){
+      for(var i=0;i<Game.sprites.length;i++){
         if(other.id == Game.sprites[i].id && Game.sprites[i].name == 'ship'){
           Game.sprites[i].score += 120 / this.scale;
-          console.log(Game.sprites[i].score);
+          // console.log(Game.sprites[i].score);
           io.emit('new_score',Game.sprites[i].playerName,Game.sprites[i].score);
           Game.checkHighScore(Game.sprites[i].name,Game.sprites[i].score);
           break;
@@ -63,6 +63,15 @@ Asteroid = function () {
       }
     }
     Game.explosionAt(other.x, other.y);
+    var density = 0;
+    for(var j=0;j<Game.sprites.length;j++){
+      if(Game.sprites[j].name == 'asteroid'){
+        density+=Game.sprites[j].scale;
+      }
+    }
+    if(density <50){
+      Game.spawnAsteroids(3);
+    }
     this.die();
   };
 

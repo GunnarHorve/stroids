@@ -24,7 +24,7 @@ socket.on('data',function(pos,vel,acc,scale,type) {
   toAdd.visible = true;
   console.log(toAdd.x+'  '+toAdd.y);
   Game.sprites.push(toAdd);
-  if(Game.ship ==null && toAdd.name == 'ship'){
+  if(Game.ship ===null && toAdd.name == 'ship'){
     if(Game.sprites.length > 1){
       Game.start = false;
     }
@@ -65,7 +65,7 @@ socket.on('new_data',function(pos,vel,acc,id,scale,type){
 socket.on('update',function(pos,vel,acc,scale,type){
   var id;
   if(type ==='ship'){
-    id = scale
+    id = scale;
   }else{
     console.log('NOT SUPPORTED (YET?)');
     return;
@@ -89,14 +89,14 @@ socket.on('update',function(pos,vel,acc,scale,type){
 });
 
 socket.on('new_score',function(id,score){
-  console.log('new score is: '+score)
+  // console.log('new score is: '+score);
   checkHighScore(id,score);
-})
+});
 
 socket.on('scores',function(names, scores){
   leaderNames = names;
-  leaderScores =scores
-})
+  leaderScores =scores;
+});
 
 //leaderboard work top 5
 //checks the given score against the lowest score and adds to list if need be
@@ -115,7 +115,7 @@ socket.on('scores',function(names, scores){
       leaderNames[0] = name;
       forceHighScoreSort();
     }
-  }
+  };
 
   function alreadyOnBoard(name, score){
     for(var i = 0; i < leaderNames.length; i++){
@@ -163,18 +163,20 @@ socket.on('despawn', function(index) { //please call this for ALL despawns, incl
     }
   }
   // console.log(thing.name+'  '+thing.id);
-  if(thing==null){return;}
+  if(thing===null){return;}
 
   if(thing.name === "ship" || thing.name === "asteroid"){
     var boomSound = document.getElementById("kaboomSound");
     boomSound.load();
     boomSound.play();
 }
-  thing.die();
   if(thing.id == Game.ship.id){
     // Game.FSM.state = waiting;
+    thing.die();
     Game.FSM.boot();
+    return;
   }
+  thing.die();
 });
 
 // $(window).keydown(function (e) {
