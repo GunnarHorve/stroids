@@ -90,7 +90,7 @@ var Sprite = function () {
   };
   this.move = function (delta) {
     if (!this.visible) return;
-    console.log('moving');
+    // console.log('moving');
     this.transPoints = null; // clear cached points
 
     if (typeof(this.preMove)==='function') {
