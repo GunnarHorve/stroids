@@ -109,6 +109,9 @@ var Sprite = function () {
     this.x += this.vel.x * delta;
     this.y += this.vel.y * delta;
     this.rot += this.vel.rot * delta;
+    if(this.name == 'ship'){
+      console.log(this.x+'  '+this.y);
+    }
     if (this.rot > 360) {
       this.rot -= 360;
     } else if (this.rot < 0) {
@@ -219,6 +222,9 @@ var Sprite = function () {
       this.currentNode.leave(this);
       this.currentNode = null;
     }
+    var io = require('../bin/www');
+    io.emit('despawn',this.id);
+    console.log(this.name+'  '+this.id);
   };
   this.transformedPoints = function () {
     if (this.transPoints) return this.transPoints;

@@ -65,6 +65,7 @@ Ship = function () {
     // }
 
     // limit the ship's speed
+    console.log('running premove');
     if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 8) {
       this.vel.x *= 0.95;
       this.vel.y *= 0.95;
@@ -73,10 +74,8 @@ Ship = function () {
 
   this.collision = function (other) {
     console.log('ship explodes');
-    var io = require('../bin/www');
     Game.explosionAt(other.x, other.y);
     this.die();
-    io.emit('despawn',this.id,'ship');
   };
 
 };

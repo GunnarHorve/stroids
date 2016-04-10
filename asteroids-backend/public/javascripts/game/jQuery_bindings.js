@@ -48,14 +48,6 @@ $(function () {
   Sprite.prototype.grid    = grid;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
-  var ship = new Ship();
-
-  ship.x = Game.canvasWidth / 2;
-  ship.y = Game.canvasHeight / 2;
-
-  sprites.push(ship);
-  Game.ship = ship;
-
   var i, j = 0;
 
   var lastFrame = Date.now();
@@ -106,11 +98,12 @@ window.addEventListener('resize', function(event){
 
     for (i = 0; i < sprites.length; i++) {
 
-      sprites[i].run(delta);
+      Game.sprites[i].run(delta);
 
-      if (sprites[i].reap) {
-        sprites[i].reap = false;
-        sprites.splice(i, 1);
+      if (Game.sprites[i].reap) {
+        console.log('deleting');
+        Game.sprites[i].reap = false;
+        Game.sprites.splice(i, 1);
         i--;
       }
     }
