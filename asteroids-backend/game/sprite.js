@@ -185,7 +185,7 @@ var Sprite = function () {
       px = trans[i*2];
       py = trans[i*2 + 1];
       // mozilla doesn't take into account transforms with isPointInPath >:-P
-      if (this.pointInPolygon(px,py) {
+      if (this.pointInPolygon(px,py)) {
         other.collision(this);
         this.collision(other);
         return;

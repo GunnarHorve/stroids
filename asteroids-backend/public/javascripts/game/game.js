@@ -46,12 +46,10 @@ Game = {
           break;
         }
       }
-      if (i == Game.sprites.length) {
-        this.state = 'new_level';
-      }
-    },  execute: function () {
-      this[this.state]();
     },
-    state: 'boot'
-  }
+    execute: function () {
+     this[this.state]();
+   },
+   state: 'boot'
+ }
 };
