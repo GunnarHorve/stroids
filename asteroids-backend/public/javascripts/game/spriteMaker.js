@@ -75,9 +75,11 @@ $(window).keydown(function (e) {
     Game.ship.children.exhaust.visible = true;
     console.log('trying to move');
     socket.emit('move',[0.5 * Math.cos(rad), 0.5 * Math.sin(rad)]);
-  } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') { //please sync ship
-    socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
-  } else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
+  }else if(KEY_CODES[e.keyCode]==='left') { //please sync ship
+    socket.emit('turn',[true,false]);
+  }else if(KEY_CODES[e.keyCode]==='right'){
+    socket.emit('turn',[false,true]);
+  }else if(KEY_CODES[e.keyCode]==='space') { //please populate & send bullet object on other side
     socket.emit('bullet fire');
     var laserSound = document.getElementById("pewPewSound");
     laserSound.load();
@@ -91,6 +93,7 @@ $(window).keydown(function (e) {
       Game.ship.children.exhaust.visible = false;
       socket.emit('move',[0,0]);
     } else if(KEY_CODES[e.keyCode]==='left' || KEY_CODES[e.keyCode]==='right') {
+      console.log(KEY_STATUS.left+'  '+KEY_STATUS.right);
       socket.emit('turn',[KEY_STATUS.left,KEY_STATUS.right]);
     }
 

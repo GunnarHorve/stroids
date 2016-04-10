@@ -98,11 +98,16 @@ io.on('connection',function(socket){
 
   socket.on('turn',function(status){
     if(status[0]){
-      ship.vel.rot -=6;
-    }
-    if(status[1]){
-    ship.vel.rot +=6;
-    }
+      ship.vel.rot =-6;
+    }else if(status[1]){
+      ship.vel.rot =6;
+    }else{
+      ship.vel.rot = 0;
+  }
+
+    socket.emit('update',[ship.x,ship.y,ship.rot],
+    [ship.vel.x,ship.vel.y,ship.vel.rot],
+    [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
   })
 
   socket.on('start',function(){
