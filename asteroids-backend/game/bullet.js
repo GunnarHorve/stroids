@@ -30,7 +30,7 @@ Bullet = function () {
     }
     if (this.time > 50) {
       this.visible = false;
-      this.time = 0;
+      this.die();
     }
   };
   this.collision = function (other) {
