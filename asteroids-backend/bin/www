@@ -76,6 +76,8 @@ var ship = new Ship();
 
 ship.x = Game.canvasWidth / 2;
 ship.y = Game.canvasHeight / 2;
+ship.id = Game.id++;
+console.log(Game.id);
 
 // ship.sprites.push(ship);
 
@@ -94,6 +96,12 @@ io.on('connection',function(socket){
   })
 
   socket.on('turn',function(status){
+    if(status[0]){
+      Game.ship.vel.rot -=6;
+    }
+    if(status[1]){
+      Game.ship.vel.rot +=6;
+    }
   })
 
   socket.on('start',function(){
@@ -102,15 +110,19 @@ io.on('connection',function(socket){
   })
 
   socket.on('player_join',function(){
-    Game.updateShip(function(data){
-      socket.emit('ship_data',data);
-    })
+    x = ship.x;
+    y = ship.y;
+    rot = ship.rot;
+    velX = ship.vel.x;
+    velY = ship.vel.y;
+    rotVel = ship.vel.rot;
+    socket.emit('data',[x,y,rot],[velX,velY,rotVel],[0,0,0],ship.id,'ship');
+    console.log('spawning ship '+ship.id);
   })
 
   socket.on('move',function(acc){
     Game.ship.acc.x = acc[0];
     Game.ship.acc.y = acc[1];
-    console.log('accelerating at: '+acc);
   })
 
   // var updates =setInterval(function(){

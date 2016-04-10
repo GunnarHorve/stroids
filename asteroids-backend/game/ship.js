@@ -73,10 +73,8 @@ Ship = function () {
 
   this.collision = function (other) {
     console.log('ship explodes');
-    var io = require('../bin/www');
     Game.explosionAt(other.x, other.y);
     this.die();
-    io.emit('despawn',this.id,'ship');
   };
 
 };

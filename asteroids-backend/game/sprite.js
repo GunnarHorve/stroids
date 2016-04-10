@@ -219,6 +219,9 @@ var Sprite = function () {
       this.currentNode.leave(this);
       this.currentNode = null;
     }
+    var io = require('../bin/www');
+    io.emit('despawn',this.id);
+    console.log(this.name+'  '+this.id);
   };
   this.transformedPoints = function () {
     if (this.transPoints) return this.transPoints;

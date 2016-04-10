@@ -36,7 +36,7 @@ Game = {
     },
     spawn_ship: function () {
       // if (Game.ship.isClear()) {
-        Game.ship.visible = true;
+        // Game.ship.visible = true;
         this.state = 'run';
       // }
     },

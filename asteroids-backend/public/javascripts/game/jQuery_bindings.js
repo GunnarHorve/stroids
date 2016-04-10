@@ -103,11 +103,12 @@ var leaderScores = [100, 200, 300, 400, 500];
 
     for (i = 0; i < sprites.length; i++) {
 
-      sprites[i].run(delta);
+      Game.sprites[i].run(delta);
 
-      if (sprites[i].reap) {
-        sprites[i].reap = false;
-        sprites.splice(i, 1);
+      if (Game.sprites[i].reap) {
+        console.log('deleting');
+        Game.sprites[i].reap = false;
+        Game.sprites.splice(i, 1);
         i--;
       }
     }
