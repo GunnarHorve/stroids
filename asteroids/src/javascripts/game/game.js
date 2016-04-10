@@ -11,6 +11,9 @@ Game = {
 
   sprites: [],
   ship: null,
+  start: true,
+
+  playerName: "",
 
   //message work
   chatmode: false,
@@ -28,10 +31,15 @@ Game = {
   },
   FSM: {
     boot: function () {
+      Game.ship = null;
       this.state = 'waiting';
     },
     waiting: function () {
-      Text.renderText('Press Space to Start', 36, Game.canvasWidth/2 - 270, Game.canvasHeight/2);
+      // var c=document.getElementById("canvas");
+      // var ctx=c.getContext("2d");
+      // ctx.translate(-800,-600);
+
+      Text.renderText('Press Space to Start', 36, Game.canvasWidth/2, Game.canvasHeight/2);
       if (KEY_STATUS.space || window.gameStart) {
         KEY_STATUS.space = false; // hack so we don't shoot right away
         window.gameStart = false;
@@ -40,14 +48,14 @@ Game = {
     },
     start: function () {
       socket.emit('start');
-      socket.emit('player_join');
+      socket.emit('player_join',Game.playerName);
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
-      // if (Game.ship.isClear()) {
-        // Game.ship.visible = true;
+      if (Game.ship != null) {
+        Game.ship.visible = true;
         this.state = 'run';
-      // }
+      }
     },
     run: function () {
       for (var i = 0; i < Game.sprites.length; i++) {
@@ -58,6 +66,14 @@ Game = {
     },
     execute: function () {
      this[this.state]();
+   },
+   getName: function(){
+     var tempName = prompt("Please enter a name", "John Wick");
+     if(tempName == null){
+       Game.playerName = "Idiot #" + Math.random() * 100000;
+     }else{
+       Game.playerName = tempName;
+     }
    },
    state: 'boot'
  }

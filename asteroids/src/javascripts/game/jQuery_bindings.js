@@ -43,6 +43,8 @@ $(function () {
   var sprites = [];
   Game.sprites = sprites;
 
+  Game.FSM.getName();
+
   // so all the sprites can use it
   Sprite.prototype.context = context;
   Sprite.prototype.grid    = grid;
@@ -57,9 +59,7 @@ $(function () {
 
   var canvasNode = canvas[0];
 
-//leaderboard work top 5
-var leaderNames = ["bob1", "bob2", "bob3", "bob4", "bob5"];
-var leaderScores = [100, 200, 300, 400, 500];
+
 //leaderboard work end
 
   // shim layer with setTimeout fallback
@@ -100,16 +100,19 @@ var leaderScores = [100, 200, 300, 400, 500];
 
     //chat
     if(Game.chatmode){
-      context.fillText(Game.currentMessage, 10, Game.canvasHeight - 10);
+      context.fillText(Game.currentMessage, 10 + Game.xCount*800, (Game.yCount+1)*600 - 10);
       for(i = 0; i < Game.messages.length; i++){
-        textY = Game.canvasHeight - 30 - 15*i;
+        textX = 10 + Game.xCount*800;
+        textY = (Game.yCount+1)*600 - 30 - 15*i;
+
         context.fillText(Game.messages[i], 10, textY);
       }
     }
 
     for(var i = 0; i < Game.messages.length; i++){
       if(Game.messageTimer[i] > 0){
-        textY = Game.canvasHeight - 30 - 15*i;
+        textX = 10 + Game.xCount*800;
+        textY = (Game.yCount+1)*600 - 30 - 15*i;
         context.fillText(Game.messages[i], 10, textY);
         Game.messageTimer[i]--;
       }
@@ -117,57 +120,35 @@ var leaderScores = [100, 200, 300, 400, 500];
     //chat
 
     //leaderboard
+    if(leaderNames != null){
     for(var i = 0; i < leaderNames.length; i++){
-      textY = 20 + 20*(4-i);
+      textY = 20 + 20*(4-i) + Game.yCount * 600;
       var boardRow = (5-i) + ": " + leaderNames[i] + " " + leaderScores[i];
-      context.fillText(boardRow, Game.canvasWidth-8*boardRow.length, textY);
+      textX = ((Game.xCount + 1)*800)-8*boardRow.length;
+      context.fillText(boardRow, textX, textY);
     }
+  }
+
+    //display markers
+    // context.beginPath();
+    // ctx.moveTo(0,0);
+    // ctx.lineTo(30, 30);
+    // ctx.stroke();
+    // ctx.moveTo(2400, 0);
+    // ctx.lineTo(2370, 30);
+    // ctx.stroke();
+    // ctx.moveTo(0, 1800);
+    // ctx.lineTo()
 
     // display score
     var score_text = ''+ Game.score;
-    context.fillText(score_text, 15, 20);
+    textY = 20 + (Game.yCount) * 600;
+    textX = ((Game.xCount)*800) + 15;
+    context.fillText(score_text, textX, textY);
 
     requestAnimFrame(mainLoop, canvasNode);
   };
 
   mainLoop();
-
-
-//checks the given score against the lowest score and adds to list if need be
-  function checkHighScore(name, score){
-    var lowestHigh = leaderScores[0];//scores are 0-4 lowest to highest
-    if (score > lowestHigh){
-      leaderScores[0] = score;
-      leaderNames[0] = name;
-      forceHighScoreSort();
-    }
-  }
-
-  function forceHighScoreSort(){
-    var temp = "";
-    var temp2 = 0;
-    var j = 0;
-    for(var i = 1; i < leaderNames.length; i++){
-      j = i;
-      while(j > 0 && leaderScores[j-1] > leaderScores[j]){
-        swapScore(j,j-1);
-        j--;
-      }
-    }
-  }
-
-  function swapScore(index1, index2){
-    temp1 = leaderNames[index1];
-    temp2 = leaderScores[index1];
-    leaderNames[index1] = leaderNames[index2];
-    leaderScores[index1] = leaderScores[index2];
-    leaderNames[index2] = temp1;
-    leaderScores[index2] = temp2;
-  }
-
-  function resetHighScores(){
-    leaderNames = ["", "", "", "", ""];
-    leaderScores = [0, 0, 0, 0, 0];
-  }
 
 });

@@ -1,4 +1,10 @@
 $(window).keydown(function (e) {
+
+  if(!Game.chatmode &&(KEY_CODES[e.keyCode] == 't' || KEY_CODES[e.keyCode] == '/')){
+    Game.chatmode = true;
+    console.log("hi");
+    return;
+  }
   if(Game.chatmode) {
     handleChat(e);
   }
@@ -18,8 +24,6 @@ $(window).keydown(function (e) {
     var laserSound = document.getElementById("pewPewSound");
     laserSound.load();
     laserSound.play();
-  } else if(KEY_CODES[e.keyCode]==='/' || KEY_CODES[e.keyCode]==='t') {
-    Game.chatmode = true;
   }
 
   KEY_STATUS[KEY_CODES[e.keyCode]] = true
@@ -40,7 +44,7 @@ $(window).keydown(function (e) {
 function handleChat(e){
     if(KEY_CODES[e.keyCode] === 'enter'){
       Game.currentMessage = Game.currentMessage.substring(1, Game.currentMessage.length);
-      addChatToScreen(Game.currentMessage);
+      socket.emit('chat',Game.playerName,Game.currentMessage);
       Game.chatmode = false;
       Game.currentMessage = ">";
       return;
@@ -60,7 +64,8 @@ function handleChat(e){
         //
 
 
-function addChatToScreen(string){
+socket.on('chat', function(name, msg){
+  var string = name+': '+msg;
   var tempA = Game.messages[0];
   var tempA2 = Game.messageTimer[0];
   var tempB = "";
@@ -75,4 +80,4 @@ function addChatToScreen(string){
     }
     Game.messages[0] = string;
     Game.messageTimer[0] = 600;
-}
+});

@@ -14,6 +14,8 @@ Ship = function () {
 
   this.bulletCounter = 0;
   this.id;
+  this.score=0;
+  this.playerName = "idiot";
 
   this.postMove = this.wrapPostMove;
 
@@ -65,7 +67,10 @@ Ship = function () {
     // }
 
     // limit the ship's speed
-    if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 8) {
+    if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 10) {
+      this.vel.x *= .8;
+      this.vel.y *= .8;
+    }else if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 8) {
       this.vel.x *= 0.95;
       this.vel.y *= 0.95;
     }

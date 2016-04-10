@@ -12,6 +12,9 @@ Game = {
 
   sprites: [],
   ship: null,
+  leaderNames: ['bob1','bob2','bob3','bob4','bob5'],
+  leaderScores: [100,200,300,400,500],
+
 
   spawnAsteroids: function (count) {
     if (!count) count = this.totalAsteroids;
@@ -63,13 +66,10 @@ Game = {
           Game.sprites[i].visible = false;
         }
       }
-
-      Game.score = 0;
-      Game.lives = 2;
-      Game.totalAsteroids = 2;
+      Game.totalAsteroids = 5;
       Game.spawnAsteroids();
 
-      this.state = 'spawn_ship';
+      this.state = 'run';
     },
     spawn_ship: function () {
       console.log('spawning ship');
@@ -139,6 +139,48 @@ Game = {
       this[this.state]();
     },
     state: 'boot'
+  },
+
+  checkHighScore: function(name, score){
+    var lowestHigh = Game.leaderScores[0];//scores are 0-4 lowest to highest
+    if (score > lowestHigh){
+      if(Game.alreadyOnBoard(name, score)){
+        Game.forceHighScoreSort();
+        return;
+      }
+      Game.leaderScores[0] = score;
+      Game.leaderNames[0] = name;
+      Game.forceHighScoreSort();
+    }
+  },
+   alreadyOnBoard: function(name, score){
+    for(var i = 0; i < Game.leaderNames.length; i++){
+      if(Game.leaderNames[i] === name){
+        Game.leaderScores[i] = score;
+        return true;
+      }
+    }
+    return false;
+  },
+
+  forceHighScoreSort: function(){
+    var temp = "";
+    var temp2 = 0;
+    var j = 0;
+    for(var i = 1; i < Game.leaderNames.length; i++){
+      j = i;
+      while(j > 0 && Game.leaderScores[j-1] > Game.leaderScores[j]){
+        Game.swapScore(j,j-1);
+        j--;
+      }
+    }
+  },   swapScore: function(index1, index2){
+    temp1 = Game.leaderNames[index1];
+    temp2 = Game.leaderScores[index1];
+    Game.leaderNames[index1] = Game.leaderNames[index2];
+    Game.leaderScores[index1] = Game.leaderScores[index2];
+    Game.leaderNames[index2] = temp1;
+    Game.leaderScores[index2] = temp2;
   }
 
 };

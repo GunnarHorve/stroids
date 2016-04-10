@@ -1,44 +1,67 @@
+
 #canvas {
-    border:1px solid black; 
-    top:0px; 
-    left:0px; 
+    border:1px solid black;
+    top:0px;
+    left:0px;
     }
-.button { 
-    position:absolute; 
-    border:1px solid black; 
+.button {
+    position:absolute;
+    border:1px solid black;
     }
-#left-controls { 
-    position:absolute; 
-    left:1px; 
-    bottom:0px; 
-    display:none; 
+#left-controls {
+    position:absolute;
+    left:1px;
+    bottom:0px;
+    display:none;
     }
-#right-controls { 
-    position:absolute; 
-    right:1px; 
-    bottom:0px; 
-    display:none; 
+#right-controls {
+    position:absolute;
+    right:1px;
+    bottom:0px;
+    display:none;
     }
-#up { 
-    width:200px; 
-    height:100px; 
+#up {
+    width:200px;
+    height:100px;
     bottom:100px;
     }
-#left { 
-    width:100px; 
-    height:100px; 
+#left {
+    width:100px;
+    height:100px;
     bottom:0px;
     }
-#right { 
-    width:100px; 
-    height:100px; 
-    bottom:0px; 
-    left:100px; 
+#right {
+    width:100px;
+    height:100px;
+    bottom:0px;
+    left:100px;
     }
-#space { 
-    width:200px; 
-    height:200px; 
-    bottom:0px; 
-    right:0px; 
+#space {
+    width:200px;
+    height:200px;
+    bottom:0px;
+    right:0px;
     }
- 
+.Banner{
+    margin:auto;
+}
+#Title{
+    margin-left: 350px;
+    /*color: #D0F8F;*/
+    color:black;
+    text-shadow: 0 0 1px #A5F1FF, 0 0 2px #A5F1FF,
+         0 0 4px #A5F1FF;
+}
+#subTitle{
+  margin-left: 270px;
+  color: black;
+  text-shadow: 0 0 1px #A5F1FF, 0 0 2px #A5F1FF,
+       0 0 4px #A5F1FF;
+}
+#sidePic{
+  position:absolute;
+  /*clip:rect(0,100px, 200px, 0);*/
+}
+#game-Container{
+  overflow:hidden;
+}

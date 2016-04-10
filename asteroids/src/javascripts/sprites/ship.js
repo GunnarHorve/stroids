@@ -15,7 +15,10 @@ Ship = function () {
   this.postMove = this.wrapPostMove;
   
   this.preMove = function (delta) {
-  if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 8) {
+    if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 10) {
+      this.vel.x *= .8;
+      this.vel.y *= .8;
+    }else if (Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y) > 8) {
       this.vel.x *= 0.95;
       this.vel.y *= 0.95;
     }

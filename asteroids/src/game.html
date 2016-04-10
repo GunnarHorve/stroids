@@ -1,10 +1,23 @@
 <html>
   <head>
     <link rel="stylesheet" href="src/stylesheets/game.css"></link>
+    <style>
+    body {
+    background-image: url("src/resources/Background3.gif");
+    }
+</style>
   </head>
   <body>
+    <h1 class="Banner" id="Title">Stroids!</h1>
+    <h4 class="Banner" id="subTitle">A fun game of explosions and large rocks</h4>
+  </div>
     <div id="game-container">
+      <span>
       <canvas id="canvas" width="800" height="600"></canvas>
+      </span>
+      <span>
+        <img id="sidePic" src="src/resources/sideImage2.png"/>
+      </span>
       <div id="left-controls">
         <div id="up" class='button'>THRUST</div>
         <div id="left" class='button'>LEFT</div>
@@ -14,20 +27,11 @@
         <div id="space" class='button'>FIRE</div>
       </div>
     </div>
-    <div id="infotainer">
-        <p>
-          Keys
-          <br/>
-          't' or '/' to talk
-          <br/>
-          'something' to do more
-          </p>
-        </p>
-    </div>
     <div>
       <audio id="kaboomSound" src="src/resources/kaboom.wav"><p>Your browser does not support this audio</p></audio>
       <audio id="pewPewSound" src="src/resources/pewPew.wav"/>
     </div>
+	<script src="src/javascripts/misc/teleports.js"></script>
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="src/javascripts/misc/helpers.js"></script>
     <script src="src/javascripts/sprites/sprite.js"></script>

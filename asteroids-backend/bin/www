@@ -72,27 +72,25 @@ Game.sprites = sprites;
 Sprite.prototype.grid    = grid;
 Sprite.prototype.matrix  = new Matrix(2, 3);
 
-var ship = new Ship();
-
-ship.x = 400;//Game.canvasWidth / 2;
-ship.y = 300;//Game.canvasHeight / 2;
-ship.id = Game.id++;
-console.log(Game.id);
-
 // ship.sprites.push(ship);
 
-Game.ship = ship;
-ship.visible = true;
-Game.sprites.push(ship);
-
 var io = require('socket.io')(server);
+var updater = null;
+var once = true;
 
 io.on('connection',function(socket){
   module.exports = io;
+  if(once){
+    Game.FSM.start();
+    once = false;
+  }
   console.log('recieved connection');
+  socket.emit('scores',Game.leaderNames,Game.leaderScores);
 
 
-  socket.on('bullet fire',function(){
+  socket.on('bullet fire',function(id){
+    var ship = findShip(id);
+    if(ship == null){return;}
     var rad = ((ship.rot-90) * Math.PI)/180;
     var vectorx = Math.cos(rad);
     var vectory = Math.sin(rad);
@@ -113,10 +111,13 @@ io.on('connection',function(socket){
 
     Game.sprites.push(toAdd);
 
-    console.log('Somebody is firing the lasers!');
+    // console.log('Somebody is firing the lasers!');
   })
 
-  socket.on('turn',function(status){
+  socket.on('turn',function(status,id){
+    var ship = findShip(id);
+    if(ship == null){return;}
+
     if(status[0]){
       ship.vel.rot =-6;
     }else if(status[1]){
@@ -130,24 +131,35 @@ io.on('connection',function(socket){
   })
 
   socket.on('start',function(){
-    Game.FSM.start();
     console.log('starting game');
   })
 
-  socket.on('player_join',function(){
+  socket.on('player_join',function(name){
+    var ship = new Ship();
+    // ship.x = Game.canvasWidth / 2;
+    // ship.y = Game.canvasHeight / 2;
+    ship.x = 400;
+    ship.y = 300;
+    ship.id = Game.id++;
+    ship.playerName = name;
     x = ship.x;
     y = ship.y;
-    rot = ship.rot;
-    velX = ship.vel.x;
-    velY = ship.vel.y;
-    rotVel = ship.vel.rot;
-    socket.emit('data',[x,y,rot],[velX,velY,rotVel],[0,0,0],ship.id,'ship');
+    ship.visible = true;
+    socket.emit('data',[x,y,0],[0,0,0],[0,0,0],ship.id,'ship');
     console.log('spawning ship '+ship.id);
+    for(i = 0;i<Game.sprites.length;i++){
+      socket.emit('new_data',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
+    [Game.sprites[i].vel.x,Game.sprites[i].vel.y,Game.sprites[i].vel.rot],
+  [Game.sprites[i].acc.x,Game.sprites[i].acc.y,Game.sprites[i].acc.rot],
+  Game.sprites[i].id,Game.sprites[i].scale,Game.sprites[i].name);
+    }
+    socket.emit('new_data',[0,0,0],[0,0,0],[0,0,0],0,0,'end');
+    Game.sprites.push(ship);
     if(updater == null){
-      var updater = setInterval(function(){
+      updater = setInterval(function(){
         for(i=0;i<Game.sprites.length;i++){
           if(Game.sprites[i].name != 'ship'){continue;}
-          socket.emit('update',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
+          socket.volatile.emit('update',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
           [Game.sprites[i].vel.x,Game.sprites[i].vel.y,Game.sprites[i].vel.rot],
           [Game.sprites[i].acc.x, Game.sprites[i].acc.y, Game.sprites[i].acc.rot],
           Game.sprites[i].id,'ship');
@@ -156,7 +168,9 @@ io.on('connection',function(socket){
     }
   })
 
-  socket.on('move',function(acc){
+  socket.on('move',function(acc,id){
+    var ship = findShip(id);
+    if(ship == null){return;}
     console.log('trying to move');
     // var Game = require('../game/Game')();
     ship.acc.x = acc[0];
@@ -164,13 +178,23 @@ io.on('connection',function(socket){
     socket.emit('update',[ship.x,ship.y,ship.rot],
     [ship.vel.x,ship.vel.y,ship.vel.rot],
     [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
-    // console.log(ship.x+' '+ship.y);
+    console.log(ship.x+' '+ship.y);
   })
 
-
-
-
+  socket.on('chat',function(name,msg){
+    socket.emit('chat',name,msg);
+  })
 });
+
+var findShip = function(id){
+  var Game = require('../game/Game')();
+  for(i = 0;i<Game.sprites.length;i++){
+    if(Game.sprites[i].id == id && Game.sprites[i].name == 'ship'){
+      return Game.sprites[i];
+    }
+  }
+  return null;
+}
 
 var lastFrame = Date.now();
 var thisFrame;
