@@ -56,12 +56,6 @@ $(function () {
 
   sprites.push(ship);
 
-  ship.bullets = [];
-  for (var i = 0; i < 10; i++) {
-    var bull = new Bullet();
-    ship.bullets.push(bull);
-    sprites.push(bull);
-  }
   Game.ship = ship;
 
   var extraDude = new Ship();
