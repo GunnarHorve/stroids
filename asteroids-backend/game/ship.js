@@ -13,6 +13,7 @@ Ship = function () {
                                3,  6]);
 
   this.bulletCounter = 0;
+  this.id;
 
   this.postMove = this.wrapPostMove;
 
@@ -72,14 +73,10 @@ Ship = function () {
 
   this.collision = function (other) {
     console.log('ship explodes');
-    // SFX.explosion();
+    var io = require('../bin/www');
     Game.explosionAt(other.x, other.y);
-    Game.FSM.state = 'player_died';
-    this.visible = false;
-    this.currentNode.leave(this);
-    this.currentNode = null;
-    communicateHit();
-    Game.lives--;
+    this.die();
+    io.emit('despawn',this.id,'ship');
   };
 
 };

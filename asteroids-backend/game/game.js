@@ -5,6 +5,7 @@ Game = {
   score: 0,
   totalAsteroids: 5,
   lives: 0,
+  id: 0,
 
   canvasWidth: 800,
   canvasHeight: 600,
@@ -30,18 +31,16 @@ Game = {
       }
       roid.vel.rot = Math.random() * 2 - 1;
       roid.visible = true;
+      roid.id = Game.id++;
       Game.sprites.push(roid);
       var io = require('../bin/www');
-      io.emit('data',[roid.x,roid.y,0],[roid.vel.x,roid.vel.y,roid.vel.rot],[0,0,0],roid.scale,'asteroid');
+      io.emit('data',[roid.x,roid.y,0],[roid.vel.x,roid.vel.y,roid.vel.rot],[roid.id,0,0],roid.scale,'asteroid');
     }
   },
 
   explosionAt: function (x, y) {
-    var splosion = new Explosion();
-    splosion.x = x;
-    splosion.y = y;
-    splosion.visible = true;
-    Game.sprites.push(splosion);
+    var io = require('../bin/www');
+    io.emit('data',[x,y,0],[0,0,0],[0,0,0],1,'explosion');
   },
 
   FSM: {
@@ -76,6 +75,7 @@ Game = {
       console.log('spawning ship');
       Game.ship.x = Game.canvasWidth / 2;
       Game.ship.y = Game.canvasHeight / 2;
+      Game.ship.id = id++;
       if (Game.ship.isClear()) {
         Game.ship.rot = 0;
         Game.ship.vel.x = 0;
@@ -148,7 +148,7 @@ Game = {
     velX = Game.ship.vel.x;
     velY = Game.ship.vel.y;
     rotVel = Game.ship.vel.rot;
-    fn([x,y,rot],[velX,velY,rotVel],[0,0,0],1,'ship');
+    fn([x,y,rot],[velX,velY,rotVel],[0,0,0],Game.ship.id,'ship');
     console.log('spawning ship');
   }
 

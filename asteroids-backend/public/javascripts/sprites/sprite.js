@@ -22,6 +22,7 @@ Sprite = function () {
   this.reap     = false;
   this.bridgesH = true;
   this.bridgesV = true;
+  this.id = 0;
 
   this.x     = 0;
   this.y     = 0;
