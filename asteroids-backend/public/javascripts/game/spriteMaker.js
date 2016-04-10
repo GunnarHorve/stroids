@@ -22,7 +22,7 @@ socket.on('data',function(pos,vel,acc,scale,type) {
 
 
 despawn = function(index) { //please call this for ALL despawns, including bullets & explosions
-  Game.sprites[index].die();
+  sprites[index].die();
 }
 
 $(window).keydown(function (e) {

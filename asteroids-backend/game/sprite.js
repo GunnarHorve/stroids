@@ -140,6 +140,7 @@ var Sprite = function () {
   };
   this.findCollisionCanidates = function () {
     if (!this.visible || !this.currentNode) return [];
+    // console.log('looking for collisions');
     var cn = this.currentNode;
     var canidates = [];
     if (cn.nextSprite) canidates.push(cn.nextSprite);
@@ -158,6 +159,7 @@ var Sprite = function () {
       var ref = canidates[i];
       do {
         this.checkCollision(ref);
+        // console.log('it has canidates');
         ref = ref.nextSprite;
       } while (ref)
     }
@@ -165,7 +167,17 @@ var Sprite = function () {
   this.checkCollision = function (other) {
     if (!other.visible ||
          this == other ||
-         this.collidesWith.indexOf(other.name) == -1) return;
+         this.collidesWith.indexOf(other.name) == -1) {
+           if(!other.visible){
+             console.log('invisible canidate?');
+           }else if(this == other){
+             console.log('same canidate?');
+           }else{
+             console.log('cant colide with?');
+           }
+           return;
+         };
+    console.log('checking single collision');
     var trans = other.transformedPoints();
     var px, py;
     var count = trans.length/2;
@@ -173,11 +185,11 @@ var Sprite = function () {
       px = trans[i*2];
       py = trans[i*2 + 1];
       // mozilla doesn't take into account transforms with isPointInPath >:-P
-      // if (($.browser.mozilla) ? this.pointInPolygon(px, py) : this.context.isPointInPath(px, py)) {
-      //   other.collision(this);
-      //   this.collision(other);
-      //   return;
-      // }
+      if (this.pointInPolygon(px,py)) {
+        other.collision(this);
+        this.collision(other);
+        return;
+      }
     }
   };
   this.pointInPolygon = function (x, y) {
@@ -202,6 +214,7 @@ var Sprite = function () {
   this.collision = function () {
   };
   this.die = function () {
+    console.log('killing thing');
     this.visible = false;
     this.reap = true;
     if (this.currentNode) {

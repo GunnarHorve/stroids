@@ -41,14 +41,22 @@ $(function () {
   }
 
   var sprites = [];
+  Game.sprites = sprites;
 
   // so all the sprites can use it
   Sprite.prototype.context = context;
   Sprite.prototype.grid    = grid;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
-  var i, j = 0;
+  var ship = new Ship();
 
+  ship.x = Game.canvasWidth / 2;
+  ship.y = Game.canvasHeight / 2;
+
+  sprites.push(ship);
+  Game.ship = ship;
+
+  var i, j = 0;
 
   var lastFrame = Date.now();
   var thisFrame;
@@ -84,7 +92,9 @@ var leaderScores = [100, 200, 300, 400, 500];
   })();
 
   var mainLoop = function () {
-    context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
+    context.clearRect(0, 0, canvas.width(), canvas.height());
+
+    Game.FSM.execute();
 
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
@@ -190,7 +200,6 @@ var leaderScores = [100, 200, 300, 400, 500];
   }
 
   $(window).keydown(function (e) {
-    switch (KEY_CODES[e.keyCode]) {
       if(chatmode && KEY_CODES[e.keyCode] != 'enter'){
           //talk
           var input = String.fromCharCode(e.keyCode).toLowerCase();
