@@ -57,13 +57,28 @@ socket.on('new_score',function(id,score){
 var leaderNames = ["bob1", "bob2", "bob3", "bob4", "bob5"];
 var leaderScores = [100, 200, 300, 400, 500];
 //checks the given score against the lowest score and adds to list if need be
+
   var checkHighScore = function(name, score){
     var lowestHigh = leaderScores[0];//scores are 0-4 lowest to highest
     if (score > lowestHigh){
+      if(alreadyOnBoard(name, score)){
+        forceHighScoreSort();
+        return;
+      }
       leaderScores[0] = score;
       leaderNames[0] = name;
       forceHighScoreSort();
     }
+  }
+
+  function alreadyOnBoard(name, score){
+    for(var i = 0; i < leaderNames.length; i++){
+      if(leaderNames[i] === name){
+        leaderScores[i] = score;
+        return true;
+      }
+    }
+    return false;
   }
 
   function forceHighScoreSort(){
