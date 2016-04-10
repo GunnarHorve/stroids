@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="game.css"></link>
+  </head>
+  <body>
+    <div id="game-container">
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <div id="left-controls">
+        <div id="up" class='button'>THRUST</div>
+        <div id="left" class='button'>LEFT</div>
+        <div id="right" class='button'>RIGHT</div>
+      </div>
+      <div id="right-controls">
+        <div id="space" class='button'>FIRE</div>
+      </div>
+    </div>
+    <div id="infotainer">
+        <p>
+          Keys
+          <br/>
+          't' or '/' to talk
+          <br/>
+          'something' to do more
+          </p>
+        </p>
+    </div>
+    <div>
+      <audio id="kaboomSound" src="src/resources/kaboom.wav"><p>Your browser does not support this audio</p></audio>
+      <audio id="pewPewSound" src="src/resources/pewPew.wav"/>
+    </div>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="src/javascripts/misc/helpers.js"></script>
+    <script src="src/javascripts/sprites/sprite.js"></script>
+    <script src="src/javascripts/sprites/bullet.js"></script>
+    <script src="src/javascripts/sprites/asteroid.js"></script>
+    <script src="src/javascripts/sprites/explosion.js"></script>
+    <script src="src/javascripts/sprites/ship.js"></script>
+    <script src="src/javascripts/vector_battle_regular.typeface.js"></script>
+    <script src="src/javascripts/misc/text.js"></script>
+    <!--<script src="src/javascripts/misc/sound.js"></script>-->
+    <script src="src/javascripts/game/game.js"></script>
+    <script src="src/javascripts/game/jQuery_bindings.js"></script>
+    <script src="node_modules/socket.io-client/socket.io.js"></script>
+    <script src='src/javascripts/game/spriteMaker.js'></script>
+	<script src='src/javascripts/misc/key_bindings.js'></script>
+  </body>
+</html>
