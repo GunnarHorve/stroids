@@ -140,18 +140,7 @@ Game = {
       this[this.state]();
     },
     state: 'boot'
-  },
-
-  // updateShip: function(fn){
-  //   x = Game.ship.x;
-  //   y = Game.ship.y;
-  //   rot = Game.ship.rot;
-  //   velX = Game.ship.vel.x;
-  //   velY = Game.ship.vel.y;
-  //   rotVel = Game.ship.vel.rot;
-  //   fn([x,y,rot],[velX,velY,rotVel],[0,0,0],Game.ship.id,'ship');
-  //   console.log('spawning ship');
-  // }
+  }
 
 };
 
