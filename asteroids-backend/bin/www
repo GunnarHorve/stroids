@@ -93,7 +93,7 @@ io.on('connection',function(socket){
 
 
   socket.on('bullet fire',function(){
-    var rad = ((this.rot-90) * Math.PI)/180;
+    var rad = ((ship.rot-90) * Math.PI)/180;
     var vectorx = Math.cos(rad);
     var vectory = Math.sin(rad);
     // move to the nose of the ship
@@ -101,7 +101,7 @@ io.on('connection',function(socket){
     y = ship.y + vectory * 10+ship.vel.y/delta;
     velx = 6 * vectorx + ship.vel.x;
     vely = 6 * vectory + ship.vel.y;
-    socket.emit('data',[x,y,0],[velx,vely,0],[0,0,0],0,'bullet')
+    socket.emit('data',[x,y,ship.rot],[velx,vely,0],[0,0,0],0,'bullet')
 
     console.log('Somebody is firing the lasers!');
   })
