@@ -31,15 +31,11 @@ Game = {
     },
     start: function () {
       socket.emit('start');
+      socket.emit('player_join')
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
-      Game.ship.x = Game.canvasWidth / 2;
-      Game.ship.y = Game.canvasHeight / 2;
       if (Game.ship.isClear()) {
-        Game.ship.rot = 0;
-        Game.ship.vel.x = 0;
-        Game.ship.vel.y = 0;
         Game.ship.visible = true;
         this.state = 'run';
       }

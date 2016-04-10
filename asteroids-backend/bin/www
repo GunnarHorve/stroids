@@ -102,7 +102,16 @@ io.on('connection',function(socket){
 
   socket.on('start',function(){
     Game.FSM.start();
+    Game.updateData(function (data){
+      socket.emit('asteroid_data',data);
+    });
     console.log('starting game');
+  })
+
+  socket.on('player_join',function(){
+    Game.updateShip(function(data){
+      socket.emit('ship_data',data);
+    })
   })
 
   socket.on('move',function(acc){
@@ -111,18 +120,39 @@ io.on('connection',function(socket){
     console.log('accelerating at: '+acc);
   })
 
-  var updates =setInterval(function(){
-    Game.updateData(function (data){
-      socket.volatile.broadcast.emit('update',data);
-    });
-  },100);
+  // var updates =setInterval(function(){
+  //   Game.updateData(function (data){
+  //     socket.emit('update',data);
+  //   });
+  // },100);
 
-
-  socket.on('disconnect',function(){
-    clearInterval(updates);
-  })
+  // socket.on('disconnect',function(){
+  //   clearInterval(updates);
+  // })
 
 });
+
+var lastFrame = Date.now();
+var thisFrame;
+var elapsed;
+var delta;
+var loop = setInterval(function(){
+  thisFrame = Date.now();
+  elapsed = thisFrame - lastFrame;
+  lastFrame = thisFrame;
+  delta = elapsed / 30;
+
+  for (i = 0; i < sprites.length; i++) {
+
+    sprites[i].run(delta);
+
+    if (sprites[i].reap) {
+      sprites[i].reap = false;
+      sprites.splice(i, 1);
+      i--;
+    }
+  }
+},100);
 
 
 /**

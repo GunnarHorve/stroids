@@ -12,6 +12,7 @@ Game = {
   ship: null,
 
   spawnAsteroids: function (count) {
+    console.log('spawing asteroids');
     if (!count) count = this.totalAsteroids;
     for (var i = 0; i < count; i++) {
       var roid = new Asteroid();
@@ -69,6 +70,7 @@ Game = {
       this.state = 'spawn_ship';
     },
     spawn_ship: function () {
+      console.log('spawning ship');
       Game.ship.x = Game.canvasWidth / 2;
       Game.ship.y = Game.canvasHeight / 2;
       if (Game.ship.isClear()) {
@@ -137,7 +139,30 @@ Game = {
   },
 
   updateData: function(fn){
-    fn(this.sprites);
+    // console.log('sending data');
+    data=[];
+    for(i = 0;i<Game.sprites.length;i++){
+      if(Game.sprites[i].name = 'asteroid'){
+        x = Game.sprites[i].x;
+        y = Game.sprites[i].y;
+        velX = Game.sprites[i].vel.x;
+        velY = Game.sprites[i].vel.y;
+        rotVel = Game.sprites[i].vel.rot;
+        data.push([x,y,velX,velY,rotVel]);
+      }
+    }
+    fn(data);
+  },
+
+  updateShip: function(fn){
+    x = Game.ship.x;
+    y = Game.ship.y;
+    rot = Game.ship.rot;
+    velX = Game.ship.vel.x;
+    velY = Game.ship.vel.y;
+    rotVel = Game.ship.vel.rot;
+    data= [x,y,rot,velX,velY,rotVel];
+    console.log('spawning ship');
   }
 
 };

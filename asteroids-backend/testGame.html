@@ -13,12 +13,7 @@
     <script src="./public/javascripts/game/game.js"></script>
     <script src="./public/javascripts/game/jQuery_bindings.js"></script>
     <script src=".\node_modules\socket.io-client\socket.io.js"></script>
-    <script>
-      var socket = io.connect('http://localhost:3000');
-      socket.on('update',function(data){
-        Game.sprites = data;
-      });
-    </script>
+    <script src='./public/javascripts/game/spriteMaker.js'></script>
     <style>
       #canvas { border:1px solid black; top:0px; left:0px; }
       .button { position:absolute; border:1px solid black; }
