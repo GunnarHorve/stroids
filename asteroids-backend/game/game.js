@@ -15,22 +15,23 @@ Game = {
     console.log('spawing asteroids');
     if (!count) count = this.totalAsteroids;
     for (var i = 0; i < count; i++) {
-      var roid = new Asteroid();
-      roid.x = Math.random() * this.canvasWidth;
-      roid.y = Math.random() * this.canvasHeight;
-      while (!roid.isClear()) {
-        roid.x = Math.random() * this.canvasWidth;
-        roid.y = Math.random() * this.canvasHeight;
-      }
-      roid.vel.x = Math.random() * 4 - 2;
-      roid.vel.y = Math.random() * 4 - 2;
-      if (Math.random() > 0.5) {
-        roid.points.reverse();
-      }
-      roid.vel.rot = Math.random() * 2 - 1;
-      Game.sprites.push(roid);
-      var io = require('../bin/www');
-      io.emit('data',[roid.x,roid.y,0],[roid.vel.x,roid.vel.y,roid.vel.rot],[0,0,0],roid.scale,'asteroid');
+      // var roid = new Asteroid();
+      // roid.x = Math.random() * this.canvasWidth;
+      // roid.y = Math.random() * this.canvasHeight;
+      // while (!roid.isClear()) {
+      //   roid.x = Math.random() * this.canvasWidth;
+      //   roid.y = Math.random() * this.canvasHeight;
+      // }
+      // roid.vel.x = Math.random() * 4 - 2;
+      // roid.vel.y = Math.random() * 4 - 2;
+      // if (Math.random() > 0.5) {
+      //   roid.points.reverse();
+      // }
+      // roid.vel.rot = Math.random() * 2 - 1;
+      // roid.visible = true;
+      // Game.sprites.push(roid);
+      // var io = require('../bin/www');
+      // io.emit('data',[roid.x,roid.y,0],[roid.vel.x,roid.vel.y,roid.vel.rot],[0,0,0],roid.scale,'asteroid');
     }
   },
 
@@ -44,7 +45,6 @@ Game = {
 
   FSM: {
     boot: function () {
-      Game.spawnAsteroids(5);
       this.state = 'waiting';
     },
     waiting: function () {

@@ -33,7 +33,7 @@ var server = http.createServer(app);
 
 var gridWidth = Math.round(Game.canvasWidth / GRID_SIZE);
 var gridHeight = Math.round(Game.canvasHeight / GRID_SIZE);
-console.log(h.GRID_SIZE);
+console.log(GRID_SIZE);
 var grid = new Array(gridWidth);
 for (var i = 0; i < gridWidth; i++) {
   grid[i] = new Array(gridHeight);
@@ -79,21 +79,14 @@ ship.y = Game.canvasHeight / 2;
 
 // ship.sprites.push(ship);
 
-// ship.bullets = [];
-// for (var i = 0; i < 10; i++) {
-//   var bull = new Bullet();
-//   ship.bullets.push(bull);
-//   // sprites.push(bull);
-// }
 Game.ship = ship;
 
-
 var io = require('socket.io')(server);
-var doemit = false;
 
 io.on('connection',function(socket){
   module.exports = io;
   console.log('recieved connection');
+
 
   socket.on('bullet fire',function(){
     console.log('Somebody is firing the lasers!');
@@ -104,15 +97,12 @@ io.on('connection',function(socket){
 
   socket.on('start',function(){
     Game.FSM.start();
-    // Game.updateAsteroids(function (pos,vel,scale,type){
-    //   socket.emit('data',pos,vel,scale,type);
-    // });
     console.log('starting game');
   })
 
-  socket.on('data',function(){
-    Game.updateShip(function(pos,vel,scale,type){
-      socket.emit('data',pos,vel,scale,type);
+  socket.on('player_join',function(){
+    Game.updateShip(function(data){
+      socket.emit('ship_data',data);
     })
   })
 
@@ -122,18 +112,23 @@ io.on('connection',function(socket){
     console.log('accelerating at: '+acc);
   })
 
-});
+  // var updates =setInterval(function(){
+  //   Game.updateData(function (data){
+  //     socket.emit('update',data);
+  //   });
+  // },100);
 
+  // socket.on('disconnect',function(){
+  //   clearInterval(updates);
+  // })
+
+});
 
 var lastFrame = Date.now();
 var thisFrame;
 var elapsed;
 var delta;
 var loop = setInterval(function(){
-  // if(doemit){
-  //   // console.log('here');
-  //   // io.emit('test',{test:'data'});
-  // }
   thisFrame = Date.now();
   elapsed = thisFrame - lastFrame;
   lastFrame = thisFrame;
@@ -141,6 +136,7 @@ var loop = setInterval(function(){
 
   for (i = 0; i < sprites.length; i++) {
 
+    sprites[i].visible = true;
     sprites[i].run(delta);
 
     if (sprites[i].reap) {
