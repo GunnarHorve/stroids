@@ -11,7 +11,7 @@ app
     .use(express.static('./'))
     // Any request not matched so far, send to main.html
     .get('*', function(req, res){
-        res.sendFile('game.html', {root: path.join(__dirname, './')});
+        res.sendFile('src/game.html', {root: path.join(__dirname, './')});
     })
     .listen(app.get('port'), function(){
         console.log('Server is listening on port ' + app.get('port'));
