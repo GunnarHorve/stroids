@@ -32,6 +32,13 @@ Game = {
   FSM: {
     boot: function () {
       Game.ship = null;
+
+      var c=document.getElementById("canvas");
+      var ctx=c.getContext("2d");
+      ctx.translate(800*Game.xCount,600*Game.yCount); //go to top right corner
+      Game.xCount = 0;
+      Game.yCount = 0;
+
       this.state = 'waiting';
     },
     waiting: function () {
