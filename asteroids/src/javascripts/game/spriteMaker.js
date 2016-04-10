@@ -11,6 +11,9 @@ socket.on('data',function(pos,vel,acc,scale,type) {
     toAdd.scale = scale;
     console.log('making asteroid');
   } else if (type === 'ship') {
+    if(scale == Game.ship.id){
+      return;
+    }
     toAdd = new Ship();
     toAdd.id = scale; //id if ship (shhhhhhhhhhhh)
     toAdd.acc.x = acc[0]; toAdd.acc.y = acc[1];toAdd.vel.rot = vel[2];
@@ -24,13 +27,30 @@ socket.on('data',function(pos,vel,acc,scale,type) {
   toAdd.visible = true;
   console.log(toAdd.x+'  '+toAdd.y);
   Game.sprites.push(toAdd);
-  if(Game.ship ===null && toAdd.name == 'ship'){
-    if(Game.sprites.length > 1){
-      Game.start = false;
-    }
-    Game.ship = toAdd;
-    console.log('I have a ship: '+Game.ship.id);
+});
+
+socket.on('new_ship',function(pos,vel,acc,scale,type) {
+  var toAdd;
+  if(type === 'asteroid') {
+    toAdd = new Asteroid();
+    toAdd.id = acc[0]; //no tears only dreams now
+    toAdd.scale = scale;
+    console.log('making asteroid');
+  } else if (type === 'ship') {
+    toAdd = new Ship();
+    toAdd.id = scale; //id if ship (shhhhhhhhhhhh)
+    toAdd.acc.x = acc[0]; toAdd.acc.y = acc[1];toAdd.vel.rot = vel[2];
+  } else if (type === 'bullet') {
+    toAdd = new Bullet();
+  } else if (type === 'explosion'){
+    toAdd = new Explosion();
   }
+  toAdd.x = pos[0]; toAdd.y = pos[1]; toAdd.rot = pos[2];
+  toAdd.vel.x = vel[0]; toAdd.vel.y = vel[1]; toAdd.vel.rot = vel[2];
+  toAdd.visible = true;
+  console.log(toAdd.x+'  '+toAdd.y);
+  Game.sprites.push(toAdd);
+  Game.ship = toAdd;
 });
 
 socket.on('new_data',function(pos,vel,acc,id,scale,type){

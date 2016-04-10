@@ -138,7 +138,7 @@ Sprite = function () {
 
     this.context.lineWidth = 1.0 / this.scale;
 
-    for (child in this.children) {
+    for (var child in this.children) {
       this.children[child].draw();
     }
 
@@ -170,7 +170,7 @@ Sprite = function () {
           oddNodes = !oddNodes;
         }
       }
-      j += 2
+      j += 2;
       if (j == points.length) j = 0;
     }
     return oddNodes;

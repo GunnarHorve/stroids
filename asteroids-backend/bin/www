@@ -85,7 +85,7 @@ io.on('connection',function(socket){
     once = false;
   }
   console.log('recieved connection');
-  socket.emit('scores',Game.leaderNames,Game.leaderScores);
+  io.emit('scores',Game.leaderNames,Game.leaderScores);
 
 
   socket.on('bullet fire',function(id){
@@ -99,7 +99,7 @@ io.on('connection',function(socket){
     y = ship.y + vectory * 10+ship.vel.y/delta;
     velx = 6 * vectorx + ship.vel.x;
     vely = 6 * vectory + ship.vel.y;
-    socket.emit('data',[x,y,ship.rot],[velx,vely,0],[0,0,0],0,'bullet');
+    io.emit('data',[x,y,ship.rot],[velx,vely,0],[0,0,0],0,'bullet');
     toAdd = new Bullet();
     toAdd.x =  x;
     toAdd.y = y;
@@ -116,7 +116,9 @@ io.on('connection',function(socket){
 
   socket.on('turn',function(status,id){
     var ship = findShip(id);
-    if(ship === null){return;}
+    if(ship === null){
+      console.log('cant find ship');
+      return;}
 
     if(status[0]){
       ship.vel.rot =-6;
@@ -125,10 +127,14 @@ io.on('connection',function(socket){
     }else{
       ship.vel.rot = 0;
   }
-    socket.emit('update',[ship.x,ship.y,ship.rot],
+    io.emit('update',[ship.x,ship.y,ship.rot],
     [ship.vel.x,ship.vel.y,ship.vel.rot],
     [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
   });
+//   socket.broadcast.emit('update',[ship.x,ship.y,ship.rot],
+//   [ship.vel.x,ship.vel.y,ship.vel.rot],
+//   [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
+// });
 
   socket.on('start',function(){
     console.log('starting game');
@@ -136,6 +142,7 @@ io.on('connection',function(socket){
 
   socket.on('player_join',function(name){
     var ship = new Ship();
+    var Game = require('../game/game')();
     // ship.x = Game.canvasWidth / 2;
     // ship.y = Game.canvasHeight / 2;
     ship.x = 400;
@@ -145,7 +152,11 @@ io.on('connection',function(socket){
     x = ship.x;
     y = ship.y;
     ship.visible = true;
-    socket.emit('data',[x,y,0],[0,0,0],[0,0,0],ship.id,'ship');
+    // socket.broadcast.emit('data',[x,y,0],[0,0,0],[0,0,0],ship.id,'ship');
+    io.emit('data',[x,y,0],[0,0,0],[0,0,0],ship.id,'ship');
+    socket.emit('new_ship',[x,y,0],[0,0,0],[0,0,0],ship.id,'ship');
+
+
     console.log('spawning ship '+ship.id);
     for(i = 0;i<Game.sprites.length;i++){
       socket.emit('new_data',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
@@ -153,41 +164,44 @@ io.on('connection',function(socket){
   [Game.sprites[i].acc.x,Game.sprites[i].acc.y,Game.sprites[i].acc.rot],
   Game.sprites[i].id,Game.sprites[i].scale,Game.sprites[i].name);
     }
-    socket.emit('new_data',[0,0,0],[0,0,0],[0,0,0],0,0,'end');
+    io.emit('new_data',[0,0,0],[0,0,0],[0,0,0],0,0,'end');
     Game.sprites.push(ship);
     if(updater === null){
       updater = setInterval(function(){
+            var Game = require('../game/game')();
         for(i=0;i<Game.sprites.length;i++){
           if(Game.sprites[i].name != 'ship'){continue;}
-          socket.volatile.emit('update',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
+          io.emit('update',[Game.sprites[i].x,Game.sprites[i].y,Game.sprites[i].rot],
           [Game.sprites[i].vel.x,Game.sprites[i].vel.y,Game.sprites[i].vel.rot],
           [Game.sprites[i].acc.x, Game.sprites[i].acc.y, Game.sprites[i].acc.rot],
           Game.sprites[i].id,'ship');
         }
-      },100);
+      },200);
     }
   });
 
   socket.on('move',function(acc,id){
+    var Game = require('../game/game')();
     var ship = findShip(id);
-    if(ship === null){return;}
-    console.log('trying to move');
+    if(ship === null){
+      console.log('cant move ship');
+      return;}
+    // console.log('trying to move');
     // var Game = require('../game/Game')();
     ship.acc.x = acc[0];
     ship.acc.y = acc[1];
-    socket.emit('update',[ship.x,ship.y,ship.rot],
+    io.emit('update',[ship.x,ship.y,ship.rot],
     [ship.vel.x,ship.vel.y,ship.vel.rot],
     [ship.acc.x, ship.acc.y, ship.acc.rot],ship.id,'ship');
-    console.log(ship.x+' '+ship.y);
   });
 
   socket.on('chat',function(name,msg){
-    socket.emit('chat',name,msg);
+    io.emit('chat',name,msg);
   });
 });
 
 var findShip = function(id){
-  var Game = require('../game/Game')();
+  var Game = require('../game/game')();
   for(i = 0;i<Game.sprites.length;i++){
     if(Game.sprites[i].id == id && Game.sprites[i].name == 'ship'){
       return Game.sprites[i];
@@ -201,7 +215,7 @@ var thisFrame;
 var elapsed;
 var delta;
 var loop = setInterval(function(){
-  var Game = require('../game/Game')();
+  var Game = require('../game/game')();
   thisFrame = Date.now();
   elapsed = thisFrame - lastFrame;
   lastFrame = thisFrame;
