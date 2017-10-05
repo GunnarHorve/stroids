@@ -13,4 +13,4 @@ This repo contains the web frontend and backend used on the server.
 ##
 
 ### In this Repo:
-This repo contains {{Zach Dordy's Thoughts}}
+This repo contains many things that can turn your raspberry pi from a useless paperweight into the most exciting entertainment machine known to man.
